@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="needle_yellow">#FEC830</color>
+    <color name="white">#FFFFFF</color>
+    <color name="grey">#757575</color>
+    <color name="background_blue">#467FD7</color>
+
+</resources>

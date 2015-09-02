@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Needle</string>
+    <string name="app_name_lower_case">needle</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="app_motto">Connecting the hood.</string>
+    <string name="country_code">Country Code</string>
+    <string name="zip_code">Zipcode</string>
+    <string name="anon_login_button_text">Anon Login</string>
+    <string name="google_login_button_text">Google Login</string>
+</resources>
