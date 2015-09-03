@@ -1,12 +1,13 @@
 package com.example.android.needle;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class LoginActivity extends ActionBarActivity {
+public class LoginActivity extends FragmentActivity {
+    private static final String LOGIN_FRAGMENT_TAG = "LoginFragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +17,7 @@ public class LoginActivity extends ActionBarActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new LoginFragment())
                     .commit();
+
         }
     }
 

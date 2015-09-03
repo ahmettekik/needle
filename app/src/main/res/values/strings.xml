@@ -4,8 +4,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="app_motto">Connecting the hood.</string>
-    <string name="country_code">Country Code</string>
-    <string name="zip_code">Zipcode</string>
+    <string name="country_code">country code (e.g. Tr)</string>
+    <string name="zip_code">zip code (e.g. 06530)</string>
     <string name="anon_login_button_text">Anon Login</string>
     <string name="google_login_button_text">Google Login</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

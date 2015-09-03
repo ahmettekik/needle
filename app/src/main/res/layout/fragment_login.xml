@@ -47,8 +47,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="@string/country_code"
+            android:hint="@string/country_code"
             android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:id="@+id/country_code_editText"/>
         <EditText
             android:layout_width="match_parent"
@@ -58,7 +59,8 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:inputType="number"
-            android:text="@string/zip_code"
+            android:hint="@string/zip_code"
+            android:textColorHint="@color/white"
             android:id="@+id/zip_code_editText"/>
 
         <Button
@@ -68,6 +70,8 @@
             android:layout_marginRight="16dp"
             android:background="@color/grey"
             android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textAppearance="?android:textAppearanceMedium"
             android:text="@string/anon_login_button_text"
             android:id="@+id/anon_login_button"/>
 
@@ -77,6 +81,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:textAllCaps="false"
+            android:textAppearance="?android:textAppearanceMedium"
             android:textColor="@color/white"
             android:background="@color/needle_yellow"
             android:text="@string/google_login_button_text"
