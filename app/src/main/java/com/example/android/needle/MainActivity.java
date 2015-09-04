@@ -1,19 +1,14 @@
 package com.example.android.needle;
 
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
+import android.app.ActionBar;
+import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.android.needle.adapter.TabsPagerAdapter;
 
-
-public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
-    private ViewPager viewPager;
-    private TabsPagerAdapter mAdapter;
+public class MainActivity extends Activity implements ActionBar.TabListener {
     private ActionBar actionBar;
     // Tab titles
     private String[] tabs =  { "All", "Last15" };
@@ -25,11 +20,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        actionBar = getSupportActionBar();
-        mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
+        actionBar = getActionBar();
 
-        viewPager.setAdapter(mAdapter);
         actionBar.setHomeButtonEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -64,17 +56,17 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
 
     @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
 
     }
 
     @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
 
     }
 
     @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 
     }
 }
