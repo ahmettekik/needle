@@ -15,11 +15,30 @@ public class Advertisement {
 
     private Long userAccountId;
 
-    private Long neighborhoodId;
 
     private String description;
 
     private Date advertisementDate;
+
+    private String countryCode;
+
+    private int zipCode;
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public int getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(int zipCode) {
+        this.zipCode = zipCode;
+    }
 
     public Long getKey() {
         return key;
@@ -35,14 +54,6 @@ public class Advertisement {
 
     public void setUserAccountId(Long userAccountId) {
         this.userAccountId = userAccountId;
-    }
-
-    public Long getNeighborhoodId() {
-        return neighborhoodId;
-    }
-
-    public void setNeighborhoodId(Long neighborhoodId) {
-        this.neighborhoodId = neighborhoodId;
     }
 
     public String getDescription() {

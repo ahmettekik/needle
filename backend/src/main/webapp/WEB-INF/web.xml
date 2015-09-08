@@ -13,8 +13,10 @@
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>com.example.android.needle.backend.RegistrationEndpoint,
-                com.example.android.needle.backend.MessagingEndpoint
+            <param-value>
+                com.example.android.needle.backend.RegistrationEndpoint,
+                com.example.android.needle.backend.MessagingEndpoint,
+                com.example.android.needle.backend.apis.AdvertisementEndpoint
             </param-value>
         </init-param>
     </servlet>
