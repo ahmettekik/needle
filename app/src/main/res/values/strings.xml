@@ -9,4 +9,5 @@
     <string name="anon_login_button_text">Anon Login</string>
     <string name="google_login_button_text">Google Login</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="empty_editText_toast_message">Do not leave text fields empty</string>
 </resources>

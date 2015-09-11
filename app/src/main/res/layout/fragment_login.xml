@@ -4,7 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".LoginFragment"
+    tools:context=".LoginActivity"
     android:background="@color/background_blue"
     android:orientation="vertical"
     android:gravity="center">
@@ -63,30 +63,17 @@
             android:textColorHint="@color/white"
             android:id="@+id/zip_code_editText"/>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@color/grey"
-            android:textColor="@color/white"
-            android:textAllCaps="false"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:text="@string/anon_login_button_text"
-            android:id="@+id/anon_login_button"/>
-
-        <Button
+        <com.google.android.gms.common.SignInButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:textAllCaps="false"
             android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/white"
-            android:background="@color/needle_yellow"
             android:text="@string/google_login_button_text"
             android:id="@+id/google_login_button"/>
+
+
 
 
 </LinearLayout>

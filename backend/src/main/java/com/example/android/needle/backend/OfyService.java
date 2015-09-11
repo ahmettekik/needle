@@ -1,6 +1,7 @@
 package com.example.android.needle.backend;
 
 import com.example.android.needle.backend.apis.AdvertisementEndpoint;
+import com.example.android.needle.backend.apis.UserAccountEndpoint;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
@@ -14,6 +15,9 @@ public class OfyService {
     static {
         ObjectifyService.register(RegistrationRecord.class);
         ObjectifyService.register(AdvertisementEndpoint.class);
+        ObjectifyService.register(UserAccountEndpoint.class);
+        ObjectifyService.register(MessagingEndpoint.class);
+        ObjectifyService.register(RegistrationEndpoint.class);
     }
 
     public static Objectify ofy() {

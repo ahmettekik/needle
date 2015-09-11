@@ -49,6 +49,8 @@ public class AdvertisementEndpoint {
             .getLogger(AdvertisementEndpoint.class.getName());
 
     private static final long MIN45MILLIS = 45 * 60 * 1000;
+    private static final long HOURINMILLIS = 60 * 60 * 1000;
+
 
 
     @ApiMethod(httpMethod = "GET")
@@ -62,24 +64,26 @@ public class AdvertisementEndpoint {
         return ofy()
                .load()
                .type(Advertisement.class)
-               .filter("countryCode ==", countryCode)
-               .filter("zipCode ==", zipCode)
+               .filter("countryCode", countryCode)
+               .filter("zipCode", zipCode)
                .list();
     }
-
-    @ApiMethod(httpMethod = "GET")
-    public final List<Advertisement> getLast15Ads(final User user) throws ServiceException {
-        EndpointUtil.throwIfNotAdmin(user);
-
-        long millis = (new Date()).getTime() - MIN45MILLIS;
-        Date date45mins = new Date(millis);
-
-        return ofy()
-               .load()
-               .type(Advertisement.class)
-               .filter("advertisementDate < ", date45mins)
-               .list();
-    }
+//
+//    @ApiMethod(httpMethod = "GET")
+//    public final List<Advertisement> getLast15Ads(
+//            final User user) throws ServiceException {
+//        EndpointUtil.throwIfNotAdmin(user);
+//
+//        long millis = (new Date()).getTime() - MIN45MILLIS;
+//        Date date45mins = new Date(millis);
+//
+//
+//        return ofy()
+//               .load()
+//               .type(Advertisement.class)
+//               .filter("advertisementDate < ", date45mins)
+//               .list();
+//    }
 
     @ApiMethod(httpMethod = "GET")
     public final Advertisement getAdvertisement(@Named("id") final Long id, final User user)
@@ -99,6 +103,8 @@ public class AdvertisementEndpoint {
 
         return advertisement;
     }
+
+
 
     @ApiMethod(httpMethod = "PUT")
     public final Advertisement updateAd(final Advertisement advertisement,
@@ -122,6 +128,30 @@ public class AdvertisementEndpoint {
             return;
         }
         ofy().delete().entity(advertisement).now();
+
+    }
+
+    @ApiMethod(httpMethod = "DELETE")
+    public final void removeAfterAnHour(@Named("countryCode") final String countryCode,
+                                        @Named("zipCode") final String zipCode,
+                                        final User user) throws ServiceException {
+        EndpointUtil.throwIfNotAdmin(user);
+
+        long millis = (new Date()).getTime() - HOURINMILLIS;
+        Date date60mins = new Date(millis);
+
+        List<Advertisement> ads =  ofy()
+                                   .load()
+                                   .type(Advertisement.class)
+                                   .filter("countryCode", countryCode)
+                                   .filter("zipCode", zipCode)
+                                   .filter("advertisementDate < ", date60mins)
+                                   .list();
+
+        if(ads == null) {
+            return;
+        }
+        ofy().delete().entities(ads).now();
 
     }
 

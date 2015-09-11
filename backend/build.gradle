@@ -12,16 +12,21 @@ buildscript {
 
 repositories {
     jcenter();
+    mavenCentral();
+
+    maven { url "/Users/jonfisk/Documents/android-sdk-macosx/extras/google/m2repository" }
+    maven { url "/Users/jonfisk/Documents/android-sdk-macosx/extras/android/m2repository" }
+
 }
 
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'appengine'
+apply plugin: 'com.google.gms.google-services'
 
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
 
 dependencies {
+    compile 'com.google.android.gms:play-services:7.8.0'
     appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.14'
     compile 'com.google.appengine:appengine-endpoints:1.9.14'
     compile 'com.google.appengine:appengine-endpoints-deps:1.9.14'
@@ -39,4 +44,6 @@ appengine {
         getClientLibsOnBuild = true
         getDiscoveryDocsOnBuild = true
     }
+
+
 }

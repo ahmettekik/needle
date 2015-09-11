@@ -4,6 +4,8 @@ import com.example.android.needle.backend.models.UserAccount;
 import com.google.api.server.spi.response.UnauthorizedException;
 import com.google.appengine.api.users.User;
 
+import static com.example.android.needle.backend.OfyService.ofy;
+
 /**
  * Created by jonfisk on 04/09/15.
  */
@@ -37,5 +39,11 @@ public class EndpointUtil {
             throw new UnauthorizedException(
                     "Only authenticated users may invoke this operation");
         }
+    }
+
+    @SuppressWarnings({"cast", "unchecked"})
+    public static final UserAccount getUserAccountbyEmail(final String email) {
+        return ofy().load().type(UserAccount.class)
+                .filter("email", email).first().now();
     }
 }

@@ -15,7 +15,6 @@ public class Advertisement {
 
     private Long userAccountId;
 
-
     private String description;
 
     private Date advertisementDate;
