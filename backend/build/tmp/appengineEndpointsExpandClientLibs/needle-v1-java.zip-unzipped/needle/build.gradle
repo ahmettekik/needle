@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 
 
-group = 'com.google.sample.mobileassistantbackend'
+group = 'com.example.android.needle.backend'
 archivesBaseName = 'needle'
 version = 'v1-1.20.0-SNAPSHOT'
 

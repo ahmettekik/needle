@@ -1,7 +1,6 @@
 package com.example.android.needle;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,7 @@ import android.view.ViewGroup;
 /**
  * A placeholder fragment containing a simple view.
  */
-public  class AllFragment extends Fragment {
+public  class AllFragment extends android.app.Fragment {
 
     public AllFragment() {
     }

@@ -9,19 +9,19 @@ public final class Constants {
      /**
      * Google Cloud Messaging API key.
      */
-    public static final String GCM_API_KEY = "YOUR-GCM-API-KEY";
+    public static final String GCM_API_KEY = "AIzaSyDZsDOiaAIiSFKxcqr7NHyvzXuI6_Ahkg0";
 
     /**
      * Android client ID from Google Cloud console.
      */
-    public static final String ANDROID_CLIENT_ID = "YOUR-ANDROID-CLIENT-ID";
+    public static final String ANDROID_CLIENT_ID = "644704306847-queqvv140sn1bn11jf08tehs4lva1qtr.apps.googleusercontent.com";
 
 
 
     /**
      * Web client ID from Google Cloud console.
      */
-    public static final String WEB_CLIENT_ID = "YOUR-WEB-CLIENT-ID";
+    public static final String WEB_CLIENT_ID = "644704306847-rlnhirpqfl8da2hmd92braiq0kcrcq4c.apps.googleusercontent.com";
 
     /**
      * Audience ID used to limit access to some client to the API.
@@ -32,7 +32,7 @@ public final class Constants {
      * API package name.
      */
     public static final String API_OWNER =
-            "mobileassistantbackend.sample.google.com";
+            "backend.needle.android.example.com";
 
     /**
      * API package path.

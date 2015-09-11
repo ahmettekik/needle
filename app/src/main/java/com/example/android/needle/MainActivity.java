@@ -12,6 +12,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     private ActionBar actionBar;
     // Tab titles
     private String[] tabs =  { "All", "Last15" };
+    private static final String TAG_ALL_FRAGMENT = "AllFragment";
+    private static final String TAG_LAST_15_FRAGMENT = "Last15Fragment";
+
 
 
 
@@ -57,12 +60,22 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-
+        if(tab.getText().equals("All")) {
+            ft.replace(R.id.container, new AllFragment(), TAG_ALL_FRAGMENT);
+        }
+        else if(tab.getText().equals("Last15")) {
+            ft.replace(R.id.container, new Last15Fragment(), TAG_LAST_15_FRAGMENT);
+        }
     }
 
     @Override
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
+        if(tab.getText().equals("All")) {
+            ft.remove(getFragmentManager().findFragmentByTag(TAG_ALL_FRAGMENT));
+        }
+        else if(tab.getText().equals("Last15")) {
+            ft.remove(getFragmentManager().findFragmentByTag(TAG_LAST_15_FRAGMENT));
+        }
     }
 
     @Override

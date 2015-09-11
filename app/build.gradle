@@ -11,6 +11,24 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+
+        /**
+         * Substitute you own sender ID here. This is the project number you got
+         * from the API Console, as described in "Getting Started."
+         */
+        buildConfigField "String", "SENDER_ID", "\"644704306847\""
+
+        /**
+         * Web client ID from Google Cloud console.
+         */
+        buildConfigField "String", "WEB_CLIENT_ID",
+                "\"644704306847-rlnhirpqfl8da2hmd92braiq0kcrcq4c.apps.googleusercontent.com\""
+
+        /**
+         * The URL to the API. Default when running locally on your computer:
+         * "http://10.0.2.2:8080/_ah/api/"
+         */
+        buildConfigField "String", "ROOT_URL", "\"http://10.0.2.2:8080/_ah/api/\""
     }
 
 

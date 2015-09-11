@@ -14,4 +14,9 @@
         android:id="@+id/listView_last15_ads">
     </ListView>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Last15"/>
+
 </LinearLayout>
