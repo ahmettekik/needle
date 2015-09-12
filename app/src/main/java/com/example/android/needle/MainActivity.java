@@ -25,6 +25,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
         actionBar = getActionBar();
 
+        new GcmRegistrationAsyncTask(this).execute();
+
         actionBar.setHomeButtonEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -82,4 +84,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 
     }
+
+
 }

@@ -22,7 +22,7 @@ android {
          * Web client ID from Google Cloud console.
          */
         buildConfigField "String", "WEB_CLIENT_ID",
-                "\"644704306847-rlnhirpqfl8da2hmd92braiq0kcrcq4c.apps.googleusercontent.com\""
+                "\"644704306847-t18j6fs0g6pg8dth7eogv91air4qvr1r.apps.googleusercontent.com\""
 
         /**
          * The URL to the API. Default when running locally on your computer:

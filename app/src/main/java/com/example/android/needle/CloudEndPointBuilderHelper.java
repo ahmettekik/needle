@@ -3,8 +3,12 @@ package com.example.android.needle;
 import com.example.android.needle.backend.needle.Needle;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
+import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
+
+import java.io.IOException;
 
 /**
  * Created by jonfisk on 11/09/15.
@@ -15,9 +19,16 @@ public final class CloudEndPointBuilderHelper {
     static Needle getEndpoints() {
         Needle.Builder builder = new Needle.Builder(
                 AndroidHttp.newCompatibleTransport(),
-                new AndroidJsonFactory(), getRequestInitializer())
-                .setRootUrl(Constants.ROOT_URL);
-
+                new AndroidJsonFactory(), null)
+                .setApplicationName("com.example.android.needle")
+                .setRootUrl(BuildConfig.ROOT_URL)
+                .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                    @Override
+                    public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest)
+                            throws IOException {
+                        abstractGoogleClientRequest.setDisableGZipContent(true);
+                    }
+                });
 
         return builder.build();
 

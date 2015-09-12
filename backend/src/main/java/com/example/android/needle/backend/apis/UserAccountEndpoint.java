@@ -11,6 +11,8 @@ import com.google.api.server.spi.config.ApiClass;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 
+import java.util.logging.Logger;
+
 import static com.example.android.needle.backend.OfyService.ofy;
 
 /**
@@ -31,9 +33,13 @@ import static com.example.android.needle.backend.OfyService.ofy;
 )
 public class UserAccountEndpoint {
 
+    private static final Logger log = Logger.getLogger(UserAccountEndpoint.class.getName());
+
+
     @ApiMethod(httpMethod = "POST")
     public final UserAccount insertUserAccount(final UserAccount userAccount) {
 
+        log.info("I enter: " + userAccount.getEmail());
         ofy().save().entity(userAccount).now();
 
         return userAccount;
