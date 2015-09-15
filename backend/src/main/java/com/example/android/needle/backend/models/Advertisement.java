@@ -2,6 +2,8 @@ package com.example.android.needle.backend.models;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Unindex;
 
 import java.util.Date;
 
@@ -13,14 +15,19 @@ public class Advertisement {
     @Id
     private Long key;
 
-    private Long userAccountId;
+    @Index
+    private String userEmail;
 
+    @Unindex
     private String description;
 
+    @Index
     private Date advertisementDate;
 
+    @Index
     private String countryCode;
 
+    @Index
     private int zipCode;
 
     public String getCountryCode() {
@@ -39,20 +46,13 @@ public class Advertisement {
         this.zipCode = zipCode;
     }
 
-    public Long getKey() {
-        return key;
+
+    public String getUserAccountId() {
+        return userEmail;
     }
 
-    public void setKey(Long key) {
-        this.key = key;
-    }
-
-    public Long getUserAccountId() {
-        return userAccountId;
-    }
-
-    public void setUserAccountId(Long userAccountId) {
-        this.userAccountId = userAccountId;
+    public void setUserAccountId(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getDescription() {

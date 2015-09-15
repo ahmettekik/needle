@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/DBPcuWES7g09iNUDTCEUaD-4QjM\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/rjUiBtSweFxLylwm7qcCVw8zTRU\"",
  "discoveryVersion": "v1",
  "id": "needle:v1",
  "name": "needle",
@@ -85,13 +85,8 @@
     "description": {
      "type": "string"
     },
-    "key": {
-     "type": "string",
-     "format": "int64"
-    },
     "userAccountId": {
-     "type": "string",
-     "format": "int64"
+     "type": "string"
     },
     "zipCode": {
      "type": "integer",
@@ -117,10 +112,6 @@
    "properties": {
     "email": {
      "type": "string"
-    },
-    "key": {
-     "type": "string",
-     "format": "int64"
     }
    }
   }

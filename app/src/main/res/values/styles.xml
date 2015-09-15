@@ -25,6 +25,7 @@
         <item name="android:titleTextStyle">@style/MyActionBarTitleText</item>
     </style>
 
+
     <style name="MyActionBarTitleText"
         parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@color/grey</item>

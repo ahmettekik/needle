@@ -37,13 +37,7 @@ public class UserAccount {
     @Index
     private String email;
 
-    public Long getKey() {
-        return key;
-    }
 
-    public void setKey(Long key) {
-        this.key = key;
-    }
 
     /**
      * Returns a boolean indicating if the user is an admin or not.
@@ -51,6 +45,7 @@ public class UserAccount {
      * @return the user authorization level.
      */
     public static boolean isAdmin(final User user) {
+
         return false;
     }
 

@@ -14,14 +14,16 @@ public final class Constants {
     /**
      * Android client ID from Google Cloud console.
      */
-    public static final String ANDROID_CLIENT_ID = "644704306847-queqvv140sn1bn11jf08tehs4lva1qtr.apps.googleusercontent.com";
+    public static final String ANDROID_CLIENT_ID =
+            "644704306847-queqvv140sn1bn11jf08tehs4lva1qtr.apps.googleusercontent.com";
 
 
 
     /**
      * Web client ID from Google Cloud console.
      */
-    public static final String WEB_CLIENT_ID = "644704306847-t18j6fs0g6pg8dth7eogv91air4qvr1r.apps.googleusercontent.com";
+    public static final String WEB_CLIENT_ID =
+            "644704306847-rlnhirpqfl8da2hmd92braiq0kcrcq4c.apps.googleusercontent.com";
 
     /**
      * Audience ID used to limit access to some client to the API.

@@ -3,7 +3,9 @@ package com.example.android.needle;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -14,6 +16,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     private String[] tabs =  { "All", "Last15" };
     private static final String TAG_ALL_FRAGMENT = "AllFragment";
     private static final String TAG_LAST_15_FRAGMENT = "Last15Fragment";
+    private  final String TAG = getClass().getSimpleName();
 
 
 
@@ -22,6 +25,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         actionBar = getActionBar();
 
@@ -55,6 +59,32 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         if (id == R.id.action_settings) {
             return true;
         }
+        else if (id == R.id.action_plus) {
+            Intent intent = getIntent();
+            String email = null;
+            String zipCode = null;
+            String countryCode = null;
+            if(intent != null) {
+                email = intent.getStringExtra(LoginActivity.EMAILEXTRA);
+                zipCode = intent.getStringExtra(LoginActivity.ZIPCODEEXTRA);
+                countryCode = intent.getStringExtra(LoginActivity.COUNTRYCODEEXTRA);
+            }
+
+            Log.d(TAG, "email: " + email + " zipCode: " + zipCode + " countryCode: " + countryCode);
+
+            Intent i = new Intent(this, NewAdvertisementActivity.class);
+            if(email != null && zipCode != null && countryCode != null) {
+                i.putExtra(LoginActivity.COUNTRYCODEEXTRA, countryCode);
+                i.putExtra(LoginActivity.ZIPCODEEXTRA, zipCode);
+                i.putExtra(LoginActivity.EMAILEXTRA, email);
+                startActivity(i);
+            }
+
+
+
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }

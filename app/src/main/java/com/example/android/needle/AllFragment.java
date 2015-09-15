@@ -22,6 +22,7 @@ public  class AllFragment extends android.app.Fragment {
     private Needle mNeedleApi;
     private  final String TAG = getClass().getSimpleName();
 
+
     public AllFragment() {
     }
 
@@ -44,6 +45,7 @@ public  class AllFragment extends android.app.Fragment {
         ListView listView = (ListView) rootView.findViewById(R.id.listView_all_ads);
 
 
+
         return rootView;
     }
 
@@ -56,8 +58,7 @@ public  class AllFragment extends android.app.Fragment {
             UserAccount userAccount = new UserAccount();
             userAccount.setEmail(userEmail);
 
-            Log.d(TAG, "I enter: " + userEmail);
-            UserAccount uA = null;
+
 
             try {
                 mNeedleApi.accounts().insertUserAccount(userAccount).execute();

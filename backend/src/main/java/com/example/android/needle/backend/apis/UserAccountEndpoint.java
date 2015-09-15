@@ -6,6 +6,7 @@ package com.example.android.needle.backend.apis;
 
 import com.example.android.needle.backend.Constants;
 import com.example.android.needle.backend.models.UserAccount;
+import com.example.android.needle.backend.utils.EndpointUtil;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiClass;
 import com.google.api.server.spi.config.ApiMethod;
@@ -39,8 +40,12 @@ public class UserAccountEndpoint {
     @ApiMethod(httpMethod = "POST")
     public final UserAccount insertUserAccount(final UserAccount userAccount) {
 
-        log.info("I enter: " + userAccount.getEmail());
-        ofy().save().entity(userAccount).now();
+
+
+        UserAccount account = EndpointUtil.getUserAccountbyEmail(userAccount.getEmail());
+
+        if(account == null)
+            ofy().save().entity(userAccount).now();
 
         return userAccount;
     }

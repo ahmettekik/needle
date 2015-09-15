@@ -10,4 +10,11 @@
     <string name="google_login_button_text">Google Login</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="empty_editText_toast_message">Do not leave text fields empty</string>
+    <string name="action_plus">New Ad</string>
+    <string name="title_activity_new_advertisement">New Advertisement</string>
+    <string name="description"><u>Description</u></string>
+    <string name="name_hint">Name</string>
+    <string name="number_hint">Optional for quicker responses.</string>
+    <string name="add_new_ad">Add</string>
+    <string name="cancel_new_ad">Cancel</string>
 </resources>
