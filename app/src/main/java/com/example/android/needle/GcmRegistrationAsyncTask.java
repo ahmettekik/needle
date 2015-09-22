@@ -2,7 +2,6 @@ package com.example.android.needle;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import com.example.android.needle.backend.registration.Registration;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -70,7 +69,6 @@ class GcmRegistrationAsyncTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
         Logger.getLogger("REGISTRATION").log(Level.INFO, msg);
     }
 }

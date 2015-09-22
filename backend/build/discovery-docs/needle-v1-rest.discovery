@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/rjUiBtSweFxLylwm7qcCVw8zTRU\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/mkt3duNVrRinORYpChB_NfNX-BE\"",
  "discoveryVersion": "v1",
  "id": "needle:v1",
  "name": "needle",
@@ -87,12 +87,17 @@
     "description": {
      "type": "string"
     },
-    "userAccountId": {
+    "name": {
+     "type": "string"
+    },
+    "phoneNumber": {
+     "type": "string"
+    },
+    "userEmail": {
      "type": "string"
     },
     "zipCode": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
     }
    }
   },

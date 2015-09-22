@@ -98,7 +98,7 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
 
             @Override
             public void afterTextChanged(Editable s) {
-                mCountryCode = s.toString();
+                mCountryCode = s.toString().toLowerCase();
             }
         });
 

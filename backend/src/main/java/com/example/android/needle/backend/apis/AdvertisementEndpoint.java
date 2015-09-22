@@ -61,12 +61,14 @@ public class AdvertisementEndpoint {
 
         EndpointUtil.throwIfNotAdmin(user);
 
+
         return ofy()
-               .load()
-               .type(Advertisement.class)
-               .filter("countryCode", countryCode)
-               .filter("zipCode", zipCode)
-               .list();
+                .load()
+                .type(Advertisement.class)
+                .filter("countryCode", countryCode)
+                .filter("zipCode", zipCode)
+                .order("-date")
+                .list();
     }
 //
 //    @ApiMethod(httpMethod = "GET")

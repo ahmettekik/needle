@@ -3,7 +3,6 @@ package com.example.android.needle.backend.models;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
-import com.googlecode.objectify.annotation.Unindex;
 
 import java.util.Date;
 
@@ -11,24 +10,48 @@ import java.util.Date;
  * Created by jonfisk on 04/09/15.
  */
 @Entity
+@Index
 public class Advertisement {
     @Id
     private Long key;
 
-    @Index
     private String userEmail;
 
-    @Unindex
     private String description;
 
-    @Index
-    private Date advertisementDate;
+    private Date date;
 
-    @Index
+    private String phoneNumber;
+
+    private String name;
+
     private String countryCode;
 
-    @Index
-    private int zipCode;
+    private String zipCode;
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getCountryCode() {
         return countryCode;
@@ -38,21 +61,12 @@ public class Advertisement {
         this.countryCode = countryCode;
     }
 
-    public int getZipCode() {
+    public String getZipCode() {
         return zipCode;
     }
 
-    public void setZipCode(int zipCode) {
+    public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
-    }
-
-
-    public String getUserAccountId() {
-        return userEmail;
-    }
-
-    public void setUserAccountId(String userEmail) {
-        this.userEmail = userEmail;
     }
 
     public String getDescription() {
@@ -64,10 +78,10 @@ public class Advertisement {
     }
 
     public Date getAdvertisementDate() {
-        return advertisementDate;
+        return date;
     }
 
     public void setAdvertisementDate(Date advertisementDate) {
-        this.advertisementDate = advertisementDate;
+        this.date = advertisementDate;
     }
 }

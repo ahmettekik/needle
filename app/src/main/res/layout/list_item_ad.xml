@@ -5,19 +5,19 @@
     android:layout_margin="16dp">
     
     <TextView
-        android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="I need help to move my bed."
+        android:maxLines="2"
+        android:padding="8dp"
         android:textColor="@color/grey"
+        android:id="@+id/description_textView"
         android:layout_gravity="center_vertical"
-        android:textAppearance="?android:textAppearanceMedium"
-/>
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:background="@android:color/secondary_text_dark"
-        android:layout_gravity="center_vertical"
-        android:layout_height="wrap_content"
-        android:src="@drawable/thumbs_up"/>
+        android:textAppearance="?android:textAppearanceMedium" />
+    <!--<ImageButton-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:background="@android:color/secondary_text_dark"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:src="@drawable/thumbs_up"/>-->
 
 </LinearLayout>

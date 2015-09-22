@@ -11,12 +11,14 @@ import android.view.MenuItem;
 
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
+    private static final String KEY_REGISTER = "register";
     private ActionBar actionBar;
     // Tab titles
     private String[] tabs =  { "All", "Last15" };
     private static final String TAG_ALL_FRAGMENT = "AllFragment";
     private static final String TAG_LAST_15_FRAGMENT = "Last15Fragment";
     private  final String TAG = getClass().getSimpleName();
+    private boolean mRegister = false;
 
 
 
@@ -29,8 +31,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
         actionBar = getActionBar();
 
-        new GcmRegistrationAsyncTask(this).execute();
-
+        if(savedInstanceState == null) {
+            new GcmRegistrationAsyncTask(this).execute();
+        }
         actionBar.setHomeButtonEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -38,6 +41,12 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             actionBar.addTab(actionBar.newTab().setText(tab_name)
                     .setTabListener(this));
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_REGISTER, mRegister);
     }
 
 

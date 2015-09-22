@@ -46,7 +46,7 @@ public class UserAccount {
      */
     public static boolean isAdmin(final User user) {
 
-        return false;
+        return true;
     }
 
 
