@@ -17,4 +17,5 @@
     <string name="number_hint">Optional for quicker responses.</string>
     <string name="add_new_ad">Add</string>
     <string name="cancel_new_ad">Cancel</string>
+    <string name="content_authority">com.example.android.needle</string>
 </resources>
