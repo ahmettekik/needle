@@ -1,32 +1,41 @@
 package com.example.android.needle;
 
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 import com.example.android.needle.backend.needle.Needle;
-import com.example.android.needle.backend.needle.model.Advertisement;
-import com.example.android.needle.backend.needle.model.AdvertisementCollection;
 import com.example.android.needle.backend.needle.model.UserAccount;
+import com.example.android.needle.data.NeedleContract;
+import com.example.android.needle.sync.NeedleSyncAdapter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public  class AllFragment extends android.app.Fragment {
+public  class AllFragment extends android.app.Fragment
+            implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final String KEY_COUNTRY_CODE = "country_code";
     private static final String KEY_ZIP_CODE = "zip_code";
     private static final String KEY_EMAIL = "email";
+
+    private static final int ADVERTISEMENT_LOADER = 0;
+
 
     private Needle mNeedleApi;
     private  final String TAG = getClass().getSimpleName();
@@ -34,22 +43,23 @@ public  class AllFragment extends android.app.Fragment {
     private String mCountryCode;
     private String mZipCode;
     private String mEmail;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
 
-    private ArrayAdapter<String> mDescriptionAdapter;
-    private List<String> mDescriptionList;
+    private SimpleCursorAdapter mAdvertisementAdapter;
+
+    public static final String[] ADVERTISEMENT_COLUMNS = {
+            NeedleContract.AdvertisementEntry.TABLE_NAME + "." + NeedleContract.AdvertisementEntry._ID,
+            NeedleContract.AdvertisementEntry.COLUMN_DESC
+    };
+
 
     public AllFragment() {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-
-
-
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         Intent intent = getActivity().getIntent();
         if(intent != null) {
@@ -57,6 +67,19 @@ public  class AllFragment extends android.app.Fragment {
             mZipCode = intent.getStringExtra(LoginActivity.ZIPCODEEXTRA);
             mCountryCode = intent.getStringExtra(LoginActivity.COUNTRYCODEEXTRA);
         }
+
+
+        NeedleSyncAdapter.syncImmediately(getActivity(), mCountryCode, mZipCode);
+
+        getLoaderManager().restartLoader(ADVERTISEMENT_LOADER, null, this);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
 
         if(savedInstanceState != null) {
             mEmail = savedInstanceState.getString(KEY_EMAIL);
@@ -69,23 +92,61 @@ public  class AllFragment extends android.app.Fragment {
             new UserTask().execute();
         }
 
-        mDescriptionList = new ArrayList<>();
-        mDescriptionAdapter = new ArrayAdapter<>(
+        mSwipeRefreshLayout = (SwipeRefreshLayout)
+                rootView.findViewById(R.id.swipe_refresh);
+
+        Uri adForLocationUri = NeedleContract.AdvertisementEntry
+                .buildAdvertisementwithLocation(mCountryCode, mZipCode);
+
+        Cursor cur = getActivity().getContentResolver().query(
+                adForLocationUri,
+                null,
+                null,
+                null,
+                null
+        );
+
+        mAdvertisementAdapter = new SimpleCursorAdapter(
                 getActivity(),
                 R.layout.list_item_ad,
-                R.id.description_textView,
-                mDescriptionList
+                cur,
+                new String[]{NeedleContract.AdvertisementEntry.COLUMN_DESC},
+                new int[]{R.id.description_textView},
+                0
         );
+
+
         ListView listView = (ListView) rootView.findViewById(R.id.listView_all_ads);
+        listView.setAdapter(mAdvertisementAdapter);
 
-        listView.setAdapter(mDescriptionAdapter);
+        mSwipeRefreshLayout.setColorSchemeResources(
+                R.color.grey,
+                R.color.needle_yellow,
+                R.color.orange
+        );
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
 
+            }
+        });
 
-        new RetrieveAdvertisementTask().execute();
-
-
+        getLoaderManager().initLoader(ADVERTISEMENT_LOADER, null, this);
 
         return rootView;
+    }
+
+    private void refreshContent() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                NeedleSyncAdapter.syncImmediately(getActivity(), mCountryCode, mZipCode);
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 500);
+
+        getLoaderManager().restartLoader(ADVERTISEMENT_LOADER, null, this);
     }
 
     @Override
@@ -96,47 +157,33 @@ public  class AllFragment extends android.app.Fragment {
         outState.putString(KEY_EMAIL, mEmail);
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri adForLocationUri = NeedleContract.AdvertisementEntry
+                .buildAdvertisementwithLocation(mCountryCode, mZipCode);
 
-    private class RetrieveAdvertisementTask extends AsyncTask<Void, Void, AdvertisementCollection> {
-
-        @Override
-        protected AdvertisementCollection doInBackground(Void... params) {
-
-            ArrayList<Advertisement> ads = null;
-            AdvertisementCollection adCollections = null;
-
-            try {
-                adCollections = mNeedleApi.
-                                    ads().
-                                    getNeighborhoodAds(mCountryCode, mZipCode).
-                                    execute();
-            } catch (IOException e) {
-                Log.d(TAG, e.getMessage());
-            }
-
-            Log.d(TAG, "adCollections: " + adCollections);
-
-
-            return adCollections;
-        }
-
-        @Override
-        protected void onPostExecute(AdvertisementCollection collection) {
-
-            if(collection == null) {
-                Log.d(TAG, "Collection is null");
-                return;
-            }
-            if(collection.getItems() != null) {
-                for(Advertisement ad: collection.getItems()) {
-                    mDescriptionList.add(ad.getDescription());
-                }
-            }
-
-            mDescriptionAdapter.notifyDataSetChanged();
-
-        }
+        return new CursorLoader(
+                getActivity(),
+                adForLocationUri,
+                ADVERTISEMENT_COLUMNS,
+                null,
+                null,
+                null
+        );
     }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mAdvertisementAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mAdvertisementAdapter.swapCursor(null);
+    }
+
+
+
 
 
     private class UserTask extends AsyncTask<Void, Void, Void> {

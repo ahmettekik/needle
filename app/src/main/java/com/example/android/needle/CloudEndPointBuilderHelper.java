@@ -16,7 +16,7 @@ import java.io.IOException;
 public final class CloudEndPointBuilderHelper {
 
 
-    static Needle getEndpoints() {
+    public static Needle getEndpoints() {
         Needle.Builder builder = new Needle.Builder(
                 AndroidHttp.newCompatibleTransport(),
                 new AndroidJsonFactory(), null)

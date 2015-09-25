@@ -152,7 +152,6 @@ public class NewAdvertisementFragment extends android.app.Fragment {
                 new AdvertisementTask().execute(intent);
 
 
-
                 Intent i = new Intent(getActivity(), MainActivity.class);
                 i.putExtra(LoginActivity.ZIPCODEEXTRA, zipCode);
                 i.putExtra(LoginActivity.COUNTRYCODEEXTRA, countryCode);
@@ -185,9 +184,13 @@ public class NewAdvertisementFragment extends android.app.Fragment {
         protected Void doInBackground(Intent... params) {
             Intent i = params[0];
             Advertisement advertisement = new Advertisement();
+            String[] location = new String[2];
             advertisement.setAdvertisementDate(new DateTime(new Date().getTime()));
+            location[0] = i.getStringExtra(LoginActivity.COUNTRYCODEEXTRA);
+            location[1] = i.getStringExtra(LoginActivity.ZIPCODEEXTRA);
+
             advertisement.setCountryCode(
-                    i.getStringExtra(LoginActivity.COUNTRYCODEEXTRA)
+                    location[0]
             );
             if(mEmailChanged) {
                 advertisement.setUserEmail(
@@ -200,7 +203,7 @@ public class NewAdvertisementFragment extends android.app.Fragment {
                 );
             }
             advertisement.setZipCode(
-                    i.getStringExtra(LoginActivity.ZIPCODEEXTRA)
+                    location[1]
             );
             advertisement.setName(mName);
             Log.d(TAG, "description: " + mDescription);

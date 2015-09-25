@@ -5,9 +5,10 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.android.needle.sync.NeedleSyncAdapter;
 
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
@@ -19,6 +20,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     private static final String TAG_LAST_15_FRAGMENT = "Last15Fragment";
     private  final String TAG = getClass().getSimpleName();
     private boolean mRegister = false;
+    private String mCountryCode;
+    private String mZipCode;
+    private String mEmail;
 
 
 
@@ -41,7 +45,26 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             actionBar.addTab(actionBar.newTab().setText(tab_name)
                     .setTabListener(this));
         }
+
+        Intent intent = getIntent();
+
+        if(intent != null) {
+            mEmail = intent.getStringExtra(LoginActivity.EMAILEXTRA);
+            mZipCode = intent.getStringExtra(LoginActivity.ZIPCODEEXTRA);
+            mCountryCode = intent.getStringExtra(LoginActivity.COUNTRYCODEEXTRA);
+        }
+
+
+        NeedleSyncAdapter.initializeSyncAdapter(
+                getApplicationContext(),
+                mCountryCode,
+                mZipCode
+        );
+
+
     }
+
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -69,23 +92,13 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             return true;
         }
         else if (id == R.id.action_plus) {
-            Intent intent = getIntent();
-            String email = null;
-            String zipCode = null;
-            String countryCode = null;
-            if(intent != null) {
-                email = intent.getStringExtra(LoginActivity.EMAILEXTRA);
-                zipCode = intent.getStringExtra(LoginActivity.ZIPCODEEXTRA);
-                countryCode = intent.getStringExtra(LoginActivity.COUNTRYCODEEXTRA);
-            }
 
-            Log.d(TAG, "email: " + email + " zipCode: " + zipCode + " countryCode: " + countryCode);
 
             Intent i = new Intent(this, NewAdvertisementActivity.class);
-            if(email != null && zipCode != null && countryCode != null) {
-                i.putExtra(LoginActivity.COUNTRYCODEEXTRA, countryCode);
-                i.putExtra(LoginActivity.ZIPCODEEXTRA, zipCode);
-                i.putExtra(LoginActivity.EMAILEXTRA, email);
+            if(mEmail != null && mZipCode != null && mCountryCode != null) {
+                i.putExtra(LoginActivity.COUNTRYCODEEXTRA, mCountryCode);
+                i.putExtra(LoginActivity.ZIPCODEEXTRA, mZipCode);
+                i.putExtra(LoginActivity.EMAILEXTRA, mEmail);
                 startActivity(i);
             }
 
