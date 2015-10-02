@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/mkt3duNVrRinORYpChB_NfNX-BE\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/oZ_UsKzpQmz0Sg_QPAziunYMnPE\"",
  "discoveryVersion": "v1",
  "id": "needle:v1",
  "name": "needle",
@@ -85,6 +85,10 @@
     "description": {
      "type": "string"
     },
+    "key": {
+     "type": "string",
+     "format": "int64"
+    },
     "name": {
      "type": "string"
     },
@@ -167,6 +171,11 @@
      "type": "string",
      "required": true
     },
+    "date": {
+     "type": "string",
+     "required": true,
+     "format": "date-time"
+    },
     "zipCode": {
      "type": "string",
      "required": true
@@ -174,7 +183,8 @@
    },
    "parameterOrder": [
     "countryCode",
-    "zipCode"
+    "zipCode",
+    "date"
    ],
    "returns": {
     "$ref": "AdvertisementCollection"

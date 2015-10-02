@@ -11,7 +11,7 @@ import com.example.android.needle.data.NeedleContract.AdvertisementEntry;
  */
 public class NeedleDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     static final String DATABASE_NAME = "needle.db";
 
@@ -30,8 +30,9 @@ public class NeedleDbHelper extends SQLiteOpenHelper {
                 AdvertisementEntry.COLUMN_COUNTRY_CODE + " TEXT NOT NULL," +
                 AdvertisementEntry.COLUMN_ZIP_CODE + " TEXT NOT NULL," +
                 AdvertisementEntry.COLUMN_DESC + " TEXT NOT NULL," +
-                AdvertisementEntry.COLUMN_PHONE_NUMBER + " TEXT NOT NULL," +
-                AdvertisementEntry.COLUMN_NAME + " TEXT NOT NULL );";
+                AdvertisementEntry.COLUMN_PHONE_NUMBER + " TEXT," +
+                AdvertisementEntry.COLUMN_NAME + " TEXT NOT NULL," +
+                AdvertisementEntry.COLUMN_DATABASE_ID + " INTEGER NOT NULL);";
 
         db.execSQL(SQL_CREATE_ADVERTISEMENT_TABLE);
 

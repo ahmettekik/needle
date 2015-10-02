@@ -12,6 +12,8 @@ import java.util.Date;
 @Entity
 @Index
 public class Advertisement {
+
+
     @Id
     private Long key;
 
@@ -79,6 +81,10 @@ public class Advertisement {
 
     public Date getAdvertisementDate() {
         return date;
+    }
+
+    public Long getKey() {
+        return key;
     }
 
     public void setAdvertisementDate(Date advertisementDate) {

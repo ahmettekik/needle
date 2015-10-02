@@ -4,6 +4,7 @@
     <datastore-index kind="Advertisement" ancestor="false" source="manual">
         <property name="countryCode" direction="asc"/>
         <property name="zipCode" direction="asc"/>
+        <property name="date" direction="asc"/>
         <property name="date" direction="desc"/>
     </datastore-index>
 </datastore-indexes>

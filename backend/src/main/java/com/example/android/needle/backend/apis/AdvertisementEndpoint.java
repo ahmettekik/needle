@@ -57,6 +57,7 @@ public class AdvertisementEndpoint {
     public final List<Advertisement> getNeighborhoodAds(
             @Named("countryCode") final String countryCode,
             @Named("zipCode") final String zipCode,
+            @Named("date") final Date date,
             final User user) throws ServiceException {
 
         EndpointUtil.throwIfNotAdmin(user);
@@ -67,6 +68,7 @@ public class AdvertisementEndpoint {
                 .type(Advertisement.class)
                 .filter("countryCode", countryCode)
                 .filter("zipCode", zipCode)
+                .filter("date >", date)
                 .order("-date")
                 .list();
     }

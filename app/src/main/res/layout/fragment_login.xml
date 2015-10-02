@@ -43,14 +43,43 @@
             android:layout_marginTop="16dp"
             android:layout_gravity="center"/>
 
-        <EditText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:hint="@string/country_code"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:id="@+id/country_code_editText"/>
+            android:orientation="horizontal"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:text = "@string/pref_country_code_label"/>
+
+            <RadioGroup android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:orientation="horizontal">
+                <RadioButton android:id="@+id/radio_us"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/us_country_code"
+                    android:layout_marginRight="16dp"
+                    android:textColor="@color/white"
+                    android:onClick="onRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio_tr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="@string/tr_country_code"
+                    android:onClick="onRadioButtonClicked"/>
+            </RadioGroup>
+        </LinearLayout>
+
+
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

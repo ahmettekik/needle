@@ -20,8 +20,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     private static final String TAG_LAST_15_FRAGMENT = "Last15Fragment";
     private  final String TAG = getClass().getSimpleName();
     private boolean mRegister = false;
-    private String mCountryCode;
-    private String mZipCode;
     private String mEmail;
 
 
@@ -50,15 +48,12 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
         if(intent != null) {
             mEmail = intent.getStringExtra(LoginActivity.EMAILEXTRA);
-            mZipCode = intent.getStringExtra(LoginActivity.ZIPCODEEXTRA);
-            mCountryCode = intent.getStringExtra(LoginActivity.COUNTRYCODEEXTRA);
         }
 
 
+
         NeedleSyncAdapter.initializeSyncAdapter(
-                getApplicationContext(),
-                mCountryCode,
-                mZipCode
+                getApplicationContext()
         );
 
 
@@ -89,21 +84,15 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
         else if (id == R.id.action_plus) {
-
-
             Intent i = new Intent(this, NewAdvertisementActivity.class);
-            if(mEmail != null && mZipCode != null && mCountryCode != null) {
-                i.putExtra(LoginActivity.COUNTRYCODEEXTRA, mCountryCode);
-                i.putExtra(LoginActivity.ZIPCODEEXTRA, mZipCode);
+            if(mEmail != null) {
                 i.putExtra(LoginActivity.EMAILEXTRA, mEmail);
                 startActivity(i);
             }
-
-
-
             return true;
         }
 

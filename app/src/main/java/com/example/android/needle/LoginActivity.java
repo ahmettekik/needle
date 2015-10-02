@@ -2,7 +2,9 @@ package com.example.android.needle;
 
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -44,32 +47,40 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
     private String mCountryCode;
     private String mEmail;
     public static final String EMAILEXTRA = "emailextra";
-    public static final String ZIPCODEEXTRA = "zipcodeextra";
-    public static final String COUNTRYCODEEXTRA = "countrycodeextra";
+
 
     /* Keys for persisting instance variables in savedInstanceState */
     private static final String KEY_IS_RESOLVING = "is_resolving";
     private static final String KEY_SHOULD_RESOLVE = "should_resolve";
-    private static final String KEY_ZIP_CODE = "zip_code";
-    private static final String KEY_COUNTRY_CODE = "country_code";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_login);
 
-        EditText countryCodeEditText = (EditText) findViewById(R.id.country_code_editText);
         EditText zipCodeEditText = (EditText) findViewById(R.id.zip_code_editText);
+        RadioButton trRadioButton = (RadioButton) findViewById(R.id.radio_tr);
+        RadioButton usRadioButton = (RadioButton) findViewById(R.id.radio_us);
 
         // Restore from saved instance state
         // [START restore_saved_instance_state]
         if (savedInstanceState != null) {
             mIsResolving = savedInstanceState.getBoolean(KEY_IS_RESOLVING);
             mShouldResolve = savedInstanceState.getBoolean(KEY_SHOULD_RESOLVE);
-            mZipCode = savedInstanceState.getString(KEY_ZIP_CODE);
-            mCountryCode = savedInstanceState.getString(KEY_COUNTRY_CODE);
-            countryCodeEditText.setText(mCountryCode);
-            zipCodeEditText.setText(mZipCode);
+        }
+        String[] location = Utility.getLocation(this);
+        if(location[0] != null && location[1] != null) {
+            zipCodeEditText.setText(location[1]);
+            mZipCode = location[1];
+            if(location[0].equals("us")) {
+                usRadioButton.setChecked(true);
+                mCountryCode = "us";
+            } else {
+                trRadioButton.setChecked(true);
+                mCountryCode = "tr";
+            }
+
         }
 
         // Build GoogleApiClient with access to basic profile
@@ -84,24 +95,6 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
         signInButton.setOnClickListener(this);
 
 
-
-        countryCodeEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mCountryCode = s.toString().toLowerCase();
-            }
-        });
-
         zipCodeEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -115,11 +108,30 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
 
             @Override
             public void afterTextChanged(Editable s) {
-                mZipCode = s.toString();
+                mZipCode = s.toString().toLowerCase();
             }
         });
 
+    }
 
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_us:
+                if (checked) {
+                    mCountryCode = "us";
+                }
+                    break;
+            case R.id.radio_tr:
+                if (checked) {
+                    mCountryCode = "tr";
+                }
+
+                    break;
+        }
     }
 
     @Override
@@ -139,8 +151,6 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_IS_RESOLVING, mIsResolving);
         outState.putBoolean(KEY_SHOULD_RESOLVE, mShouldResolve);
-        outState.putString(KEY_COUNTRY_CODE, mCountryCode);
-        outState.putString(KEY_ZIP_CODE, mZipCode);
     }
 
 
@@ -216,11 +226,16 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
         if (v.getId() == R.id.google_login_button) {
             onSignInClicked();
 
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            preferences
+                    .edit()
+                    .putString(getString(R.string.pref_country_code_key), mCountryCode)
+                    .putString(getString(R.string.pref_zip_code_key), mZipCode)
+                    .apply();
+
             if(mEmail != null && mZipCode != null && mCountryCode != null) {
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra(EMAILEXTRA, mEmail);
-                intent.putExtra(ZIPCODEEXTRA, mZipCode);
-                intent.putExtra(COUNTRYCODEEXTRA, mCountryCode);
                 startActivity(intent);
             }
             else {

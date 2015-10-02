@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -30,9 +31,10 @@ import java.io.IOException;
 public  class AllFragment extends android.app.Fragment
             implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private static final String KEY_COUNTRY_CODE = "country_code";
-    private static final String KEY_ZIP_CODE = "zip_code";
+
     private static final String KEY_EMAIL = "email";
+
+    public static final String ID_EXTRA = "id";
 
     private static final int ADVERTISEMENT_LOADER = 0;
 
@@ -43,6 +45,7 @@ public  class AllFragment extends android.app.Fragment
     private String mCountryCode;
     private String mZipCode;
     private String mEmail;
+    private Cursor mCursor;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
 
@@ -64,15 +67,19 @@ public  class AllFragment extends android.app.Fragment
         Intent intent = getActivity().getIntent();
         if(intent != null) {
             mEmail = intent.getStringExtra(LoginActivity.EMAILEXTRA);
-            mZipCode = intent.getStringExtra(LoginActivity.ZIPCODEEXTRA);
-            mCountryCode = intent.getStringExtra(LoginActivity.COUNTRYCODEEXTRA);
         }
 
 
-        NeedleSyncAdapter.syncImmediately(getActivity(), mCountryCode, mZipCode);
+        NeedleSyncAdapter.syncImmediately(getActivity());
 
-        getLoaderManager().restartLoader(ADVERTISEMENT_LOADER, null, this);
+        getLoaderManager().initLoader(ADVERTISEMENT_LOADER, null, this);
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mCursor.close();
     }
 
     @Override
@@ -83,9 +90,10 @@ public  class AllFragment extends android.app.Fragment
 
         if(savedInstanceState != null) {
             mEmail = savedInstanceState.getString(KEY_EMAIL);
-            mCountryCode = savedInstanceState.getString(KEY_COUNTRY_CODE);
-            mZipCode = savedInstanceState.getString(KEY_ZIP_CODE);
         }
+        String[] location = Utility.getLocation(getActivity());
+        mCountryCode = location[0];
+        mZipCode = location[1];
 
         mNeedleApi = CloudEndPointBuilderHelper.getEndpoints();
         if(mEmail != null) {
@@ -98,7 +106,7 @@ public  class AllFragment extends android.app.Fragment
         Uri adForLocationUri = NeedleContract.AdvertisementEntry
                 .buildAdvertisementwithLocation(mCountryCode, mZipCode);
 
-        Cursor cur = getActivity().getContentResolver().query(
+        mCursor = getActivity().getContentResolver().query(
                 adForLocationUri,
                 null,
                 null,
@@ -109,7 +117,7 @@ public  class AllFragment extends android.app.Fragment
         mAdvertisementAdapter = new SimpleCursorAdapter(
                 getActivity(),
                 R.layout.list_item_ad,
-                cur,
+                mCursor,
                 new String[]{NeedleContract.AdvertisementEntry.COLUMN_DESC},
                 new int[]{R.id.description_textView},
                 0
@@ -132,7 +140,21 @@ public  class AllFragment extends android.app.Fragment
             }
         });
 
-        getLoaderManager().initLoader(ADVERTISEMENT_LOADER, null, this);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+                if(cursor != null) {
+                    Intent i = new Intent(getActivity(), DetailsActivity.class);
+                    long adId = cursor.getLong(0);
+                    i.putExtra(ID_EXTRA, adId);
+                    i.putExtra(LoginActivity.EMAILEXTRA, mEmail);
+                    startActivity(i);
+                }
+            }
+        });
 
         return rootView;
     }
@@ -141,7 +163,7 @@ public  class AllFragment extends android.app.Fragment
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                NeedleSyncAdapter.syncImmediately(getActivity(), mCountryCode, mZipCode);
+                NeedleSyncAdapter.syncImmediately(getActivity());
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         }, 500);
@@ -152,8 +174,6 @@ public  class AllFragment extends android.app.Fragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(KEY_COUNTRY_CODE, mCountryCode);
-        outState.putString(KEY_ZIP_CODE, mZipCode);
         outState.putString(KEY_EMAIL, mEmail);
     }
 

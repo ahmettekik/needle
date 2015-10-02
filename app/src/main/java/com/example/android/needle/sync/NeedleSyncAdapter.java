@@ -16,10 +16,12 @@ import android.util.Log;
 
 import com.example.android.needle.CloudEndPointBuilderHelper;
 import com.example.android.needle.R;
+import com.example.android.needle.Utility;
 import com.example.android.needle.backend.needle.Needle;
 import com.example.android.needle.backend.needle.model.Advertisement;
 import com.example.android.needle.backend.needle.model.AdvertisementCollection;
 import com.example.android.needle.data.NeedleContract;
+import com.google.api.client.util.DateTime;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,12 +35,10 @@ public class NeedleSyncAdapter extends AbstractThreadedSyncAdapter{
     public final String LOG_TAG = NeedleSyncAdapter.class.getSimpleName();
 
 
-    private static final String COUNTRY_CODE_BUNDLE_KEY = "countryCode";
-    private static final String ZIP_CODE_BUNDLE_KEY = "zipCode";
-
     // Interval at which to sync with the weather, in milliseconds.
     // 60 seconds (1 minute) * 180 = 3 hours
     public static final int SYNC_INTERVAL = 60 * 180;
+    public static final long HOUR_IN_MILLIS = 60 * 60 * 1000;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
 
 
@@ -50,16 +50,22 @@ public class NeedleSyncAdapter extends AbstractThreadedSyncAdapter{
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d(LOG_TAG, "onPerformSync Called.");
 
-        String zipCode = extras.getString(ZIP_CODE_BUNDLE_KEY);
-        String countryCode = extras.getString(COUNTRY_CODE_BUNDLE_KEY);
+        String[] location = Utility.getLocation(getContext());
+
+        String zipCode = location[1];
+        String countryCode = location[0];
 
         Needle needleApi = CloudEndPointBuilderHelper.getEndpoints();
         AdvertisementCollection adCollection = null;
         List<ContentValues> cVVector = new ArrayList<>();
 
         try {
+            long timeInMillis = System.currentTimeMillis();
+            timeInMillis = timeInMillis - HOUR_IN_MILLIS;
+
             provider.delete(NeedleContract.AdvertisementEntry.CONTENT_URI, null, null);
-            adCollection = needleApi.ads().getNeighborhoodAds(countryCode, zipCode).execute();
+            adCollection = needleApi.ads().
+                    getNeighborhoodAds(countryCode, zipCode, new DateTime(timeInMillis)).execute();
 
             for(Advertisement ad: adCollection.getItems()) {
                 ContentValues adValues = new ContentValues();
@@ -75,6 +81,8 @@ public class NeedleSyncAdapter extends AbstractThreadedSyncAdapter{
                         ad.getDescription());
                 adValues.put(NeedleContract.AdvertisementEntry.COLUMN_NAME,
                         ad.getName());
+                adValues.put(NeedleContract.AdvertisementEntry.COLUMN_DATABASE_ID,
+                        ad.getKey());
                 if(ad.getPhoneNumber() != null) {
                     adValues.put(NeedleContract.AdvertisementEntry.COLUMN_PHONE_NUMBER,
                             ad.getPhoneNumber());
@@ -100,21 +108,20 @@ public class NeedleSyncAdapter extends AbstractThreadedSyncAdapter{
     }
 
 
-    public static void syncImmediately(Context context, String countryCode, String zipCode) {
+    public static void syncImmediately(Context context) {
         Bundle bundle = new Bundle();
 
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
 
-        bundle.putString(COUNTRY_CODE_BUNDLE_KEY, countryCode);
-        bundle.putString(ZIP_CODE_BUNDLE_KEY, zipCode);
 
 
-        ContentResolver.requestSync(getSyncAccount(context, countryCode, zipCode),
+
+        ContentResolver.requestSync(getSyncAccount(context),
                 context.getString(R.string.content_authority), bundle);
     }
 
-    private static Account getSyncAccount(Context context, String countryCode, String zipCode) {
+    private static Account getSyncAccount(Context context) {
         // Get an instance of the Android account manager
         AccountManager accountManager =
                 (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
@@ -138,19 +145,17 @@ public class NeedleSyncAdapter extends AbstractThreadedSyncAdapter{
              * then call ContentResolver.setIsSyncable(account, AUTHORITY, 1)
              * here.
              */
-            onAccountCreated(newAccount, context, countryCode, zipCode);
+            onAccountCreated(newAccount, context);
         }
         return newAccount;
 
     }
 
-    private static void onAccountCreated(Account newAccount, Context context,
-                                         String countryCode, String zipCode) {
+    private static void onAccountCreated(Account newAccount, Context context) {
         /*
          * Since we've created an account
          */
-        NeedleSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME,
-                countryCode, zipCode);
+        NeedleSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
 
         /*
          * Without calling setSyncAutomatically, our periodic sync will not be enabled.
@@ -160,22 +165,20 @@ public class NeedleSyncAdapter extends AbstractThreadedSyncAdapter{
         /*
          * Finally, let's do a sync to get things started
          */
-        syncImmediately(context, countryCode, zipCode);
+        syncImmediately(context);
     }
 
-    public static void initializeSyncAdapter(Context context, String countryCode, String zipCode) {
-        getSyncAccount(context, countryCode, zipCode);
+    public static void initializeSyncAdapter(Context context) {
+        getSyncAccount(context);
     }
 
     /**
      * Helper method to schedule the sync adapter periodic execution
      */
-    public static void configurePeriodicSync(Context context, int syncInterval, int flexTime,
-                                             String countryCode, String zipCode) {
-        Account account = getSyncAccount(context, countryCode, zipCode);
+    public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
+        Account account = getSyncAccount(context);
         Bundle bundle = new Bundle();
-        bundle.putString(COUNTRY_CODE_BUNDLE_KEY, countryCode);
-        bundle.putString(ZIP_CODE_BUNDLE_KEY, zipCode);
+
 
         String authority = context.getString(R.string.content_authority);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

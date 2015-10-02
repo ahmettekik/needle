@@ -6,6 +6,9 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="colorControlNormal">@color/white</item>
+        <item name="android:listChoiceIndicatorSingle">
+            @drawable/apptheme_btn_radio_holo_light
+        </item>
     </style>
 
     <!-- main activity action bar styles -->

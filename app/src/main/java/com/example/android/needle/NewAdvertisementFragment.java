@@ -29,8 +29,11 @@ public class NewAdvertisementFragment extends android.app.Fragment {
     private String mName;
     private String mNumber;
     private String mEmail;
-    private Boolean mEmailChanged = false;
-
+    private boolean mEmailChanged = false;
+    private boolean mDescriptionChanged = false;
+    private boolean mNameChanged = false;
+    private boolean mNumberChanged = false;
+    private boolean toBeEdited = false;
     private final String TAG = getClass().getSimpleName();
 
     private Needle mNeedleApi;
@@ -44,13 +47,21 @@ public class NewAdvertisementFragment extends android.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_new_advertisement, container, false);
         final Intent intent = getActivity().getIntent();
         final String email = intent.getStringExtra(LoginActivity.EMAILEXTRA);
-        final String zipCode = intent.getStringExtra(LoginActivity.ZIPCODEEXTRA);
-        final String countryCode = intent.getStringExtra(LoginActivity.COUNTRYCODEEXTRA);
+        final String description = intent.getStringExtra(DetailsActivityFragment.DESCRIPTION_EXTRA);
+        final String number = intent.getStringExtra(DetailsActivityFragment.NUMBER_EXTRA);
+        final String name = intent.getStringExtra(DetailsActivityFragment.NAME_EXTRA);
+        final long oldId = intent.getLongExtra(DetailsActivityFragment.DATABASE_ID_EXTRA, -1);
+        if (description != null) toBeEdited = true;
         mNeedleApi = CloudEndPointBuilderHelper.getEndpoints();
 
 
+        EditText descEditText = (EditText) view.findViewById(R.id.description_editText);
+        if (toBeEdited) {
+            mDescription = description;
+            descEditText.setText(description);
+        }
 
-        ((EditText) view.findViewById(R.id.description_editText)).addTextChangedListener(
+        descEditText.addTextChangedListener(
                 new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -64,11 +75,22 @@ public class NewAdvertisementFragment extends android.app.Fragment {
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        mDescription = s.toString();
+                        if (description != null && !description.equals(s.toString())) {
+                            mDescription = s.toString();
+                            mDescriptionChanged = true;
+                        } else {
+                            mDescription = s.toString();
+                        }
+
                     }
                 }
         );
-        ((EditText) view.findViewById(R.id.name_editText)).addTextChangedListener(
+        EditText nameEditText = (EditText) view.findViewById(R.id.name_editText);
+        if (toBeEdited) {
+            mName = name;
+            nameEditText.setText(name);
+        }
+        nameEditText.addTextChangedListener(
                 new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -82,11 +104,21 @@ public class NewAdvertisementFragment extends android.app.Fragment {
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        mName = s.toString();
+                        if (name != null && !name.equals(s.toString())) {
+                            mName = s.toString();
+                            mNameChanged = true;
+                        } else {
+                            mName = s.toString();
+                        }
                     }
                 }
         );
-        ((EditText) view.findViewById(R.id.number_editText)).addTextChangedListener(
+        EditText numberEditText = (EditText) view.findViewById(R.id.number_editText);
+        if (toBeEdited) {
+            mNumber = number;
+            numberEditText.setText(number);
+        }
+        numberEditText.addTextChangedListener(
                 new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -100,13 +132,20 @@ public class NewAdvertisementFragment extends android.app.Fragment {
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        mNumber = s.toString();
+                        if (number != null && !number.equals(s.toString())) {
+                            mNumber = s.toString();
+                            mNumberChanged = true;
+                        } else {
+                            mNumber = s.toString();
+                        }
+
                     }
                 }
         );
 
         EditText emailEditText = (EditText) view.findViewById(R.id.email_editText);
         emailEditText.setText(email);
+        mEmail = email;
         emailEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -121,9 +160,8 @@ public class NewAdvertisementFragment extends android.app.Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (email.equals(s.toString())) {
-                    return;
-                }
-                else {
+                    mEmail = s.toString();
+                } else {
                     mEmail = s.toString();
                     mEmailChanged = true;
                 }
@@ -132,29 +170,51 @@ public class NewAdvertisementFragment extends android.app.Fragment {
 
 
         final Button addButton = (Button) view.findViewById(R.id.add_button);
+        if (toBeEdited) addButton.setText("Edit");
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(mDescription == null) {
+                if (mEmail == null) {
+                    Toast.makeText(getActivity(),
+                            "Do not leave email field empty",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (mDescription == null) {
                     Toast.makeText(getActivity(),
                             "Do not leave description field empty",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(mName == null) {
+                if (mName == null) {
                     Toast.makeText(getActivity(),
                             "Do not leave name field empty",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+
+                if (toBeEdited) {
+                    if (mEmailChanged || mNumberChanged || mNameChanged || mDescriptionChanged) {
+                        new DeleteAdTask().execute(oldId);
+                    } else {
+                        Toast.makeText(
+                                getActivity(),
+                                "You have not made any changes",
+                                Toast.LENGTH_SHORT
+                        ).show();
+                        return;
+                    }
+
+                }
+
+
                 new AdvertisementTask().execute(intent);
 
 
                 Intent i = new Intent(getActivity(), MainActivity.class);
-                i.putExtra(LoginActivity.ZIPCODEEXTRA, zipCode);
-                i.putExtra(LoginActivity.COUNTRYCODEEXTRA, countryCode);
                 i.putExtra(LoginActivity.EMAILEXTRA, email);
                 startActivity(i);
             }
@@ -165,8 +225,6 @@ public class NewAdvertisementFragment extends android.app.Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), MainActivity.class);
-                i.putExtra(LoginActivity.ZIPCODEEXTRA, zipCode);
-                i.putExtra(LoginActivity.COUNTRYCODEEXTRA, countryCode);
                 i.putExtra(LoginActivity.EMAILEXTRA, email);
                 startActivity(i);
             }
@@ -177,27 +235,24 @@ public class NewAdvertisementFragment extends android.app.Fragment {
     }
 
 
-
     private class AdvertisementTask extends AsyncTask<Intent, Void, Void> {
 
         @Override
         protected Void doInBackground(Intent... params) {
             Intent i = params[0];
             Advertisement advertisement = new Advertisement();
-            String[] location = new String[2];
+            String[] location = Utility.getLocation(getActivity());
             advertisement.setAdvertisementDate(new DateTime(new Date().getTime()));
-            location[0] = i.getStringExtra(LoginActivity.COUNTRYCODEEXTRA);
-            location[1] = i.getStringExtra(LoginActivity.ZIPCODEEXTRA);
+
 
             advertisement.setCountryCode(
                     location[0]
             );
-            if(mEmailChanged) {
+            if (mEmailChanged) {
                 advertisement.setUserEmail(
                         mEmail
                 );
-            }
-            else {
+            } else {
                 advertisement.setUserEmail(
                         i.getStringExtra(LoginActivity.EMAILEXTRA)
                 );
@@ -206,15 +261,12 @@ public class NewAdvertisementFragment extends android.app.Fragment {
                     location[1]
             );
             advertisement.setName(mName);
-            Log.d(TAG, "description: " + mDescription);
-
             advertisement.setDescription(mDescription);
-            Log.d(TAG, "phoneNumber: " + mNumber);
             advertisement.setPhoneNumber(mNumber);
 
             try {
                 mNeedleApi.ads().insertAdvertisement(advertisement).execute();
-            } catch(IOException e) {
+            } catch (IOException e) {
                 Log.d(TAG, e.getMessage());
             }
 
@@ -223,5 +275,23 @@ public class NewAdvertisementFragment extends android.app.Fragment {
         }
 
 
+    }
+
+    private class DeleteAdTask extends AsyncTask<Long, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Long... params) {
+            long id = params[0];
+
+
+            try {
+                mNeedleApi.ads().removeAdvertisement(id).execute();
+            } catch (IOException e) {
+                Log.d(TAG, e.getMessage());
+            }
+
+
+            return null;
+        }
     }
 }

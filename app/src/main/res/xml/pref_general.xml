@@ -1,0 +1,16 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <ListPreference
+        android:key="@string/pref_country_code_key"
+        android:title="@string/pref_country_code_label"
+        android:dialogTitle="@string/pref_country_code_label"
+        android:entries="@array/countries_array"
+        android:entryValues="@array/countries_array_values"/>
+    <EditTextPreference
+        android:key="@string/pref_zip_code_key"
+        android:title="@string/pref_zip_code_label"
+        android:inputType="numberSigned"
+        android:singleLine="true"/>
+
+</PreferenceScreen>
