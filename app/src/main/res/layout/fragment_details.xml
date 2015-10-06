@@ -20,8 +20,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:text="Ahmet's Advertisement"/>
+                android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceLarge" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
                 android:id="@+id/ad_desc_textView"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="@color/grey"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras blandit feugiat auctor."/>
+                android:fontFamily="sans-serif-condensed" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="@color/grey"
                 android:textStyle="italic"
-                android:text="Posted at 5:25pm, 23 minutes left."/>
+                android:fontFamily="sans-serif-light" />
         </LinearLayout>
 
         <LinearLayout
@@ -85,6 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/edit_button_text"
+            android:fontFamily="sans-serif-light"
             android:textColor="@color/grey"
             android:layout_marginRight="32dp"
             android:background="@color/needle_yellow"
@@ -93,6 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/delete_button_text"
+            android:fontFamily="sans-serif-light"
             android:textColor="@color/grey"
             android:background="@color/needle_yellow"
             android:id="@+id/details_delete_button"/>

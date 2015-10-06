@@ -75,6 +75,27 @@ public class NeedleContract {
                     .build();
         }
 
+        public static Uri buildAdvertisementwithLocationAndTime(String countryCode, String zipCode,
+                long time) {
+
+            return CONTENT_URI
+                    .buildUpon()
+                    .appendPath(countryCode)
+                    .appendPath(zipCode)
+                    .appendPath(Long.toString(time))
+                    .build();
+        }
+
+        public static String[] getLocationAndTimeFromUri(Uri uri) {
+            String[] locationWithTime = new String[] {
+                    uri.getPathSegments().get(1),
+                    uri.getPathSegments().get(2),
+                    uri.getPathSegments().get(3)
+            };
+
+            return locationWithTime;
+        }
+
         public static String getUserEmailFromUri(Uri uri) {
             return uri.getPathSegments().get(1);
         }

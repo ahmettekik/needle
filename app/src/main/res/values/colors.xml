@@ -7,5 +7,6 @@
     <color name="background_blue">#467FD7</color>
     <color name="orange">#e4b42b</color>
     <color name="background_holo_light">#fff3f3f3</color>
-
+    <color name="dark_green">#006400</color>
+    <color name="fire_brick">#B22222</color>
 </resources>

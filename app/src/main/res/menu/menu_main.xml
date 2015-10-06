@@ -6,9 +6,20 @@
     <item android:id="@+id/action_plus"
           android:icon="@drawable/ic_plus"
           android:title="@string/action_plus"
+          android:fontFamily="sans-serif-light"
           app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_sort"
+        android:title="Sort by"
+        android:fontFamily="sans-serif-light"
+        app:showAsAction="never"/>
+
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
+        android:fontFamily="sans-serif-light"
         android:orderInCategory="100" app:showAsAction="never" />
+
+
+
 
 
 </menu>

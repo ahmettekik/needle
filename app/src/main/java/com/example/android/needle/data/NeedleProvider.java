@@ -23,8 +23,10 @@ public class NeedleProvider extends ContentProvider {
     static final int ADVERTISEMENT = 100;
     static final int ADVERTISEMENT_WITH_EMAIL = 101;
     static final int ADVERTISEMENT_WITH_LOCATION = 102;
+    static final int ADVERTISEMENT_WITH_LOCATION_AND_DATE = 103;
 
-    private static final String sortOrder = AdvertisementEntry.COLUMN_DATE + " DESC";
+
+
 
     private static final String sAdvertisementEmailSelection =
             AdvertisementEntry.TABLE_NAME + "." +
@@ -35,13 +37,19 @@ public class NeedleProvider extends ContentProvider {
                     AdvertisementEntry.COLUMN_COUNTRY_CODE + " = ? AND " +
                     AdvertisementEntry.COLUMN_ZIP_CODE + " = ? ";
 
+    private static final String sAdvertisementLocationTimeSelection =
+            AdvertisementEntry.TABLE_NAME + "." +
+                    AdvertisementEntry.COLUMN_COUNTRY_CODE + " = ? AND " +
+                    AdvertisementEntry.COLUMN_ZIP_CODE + " = ? AND " +
+                    AdvertisementEntry.COLUMN_DATE + " <= ? ";
+
     private static final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
     static {
         queryBuilder.setTables(AdvertisementEntry.TABLE_NAME);
     }
 
-    private Cursor getAdvertisementsByEmail(Uri uri, String[] projection) {
+    private Cursor getAdvertisementsByEmail(Uri uri, String[] projection, String sortOrder) {
         String email = AdvertisementEntry.getUserEmailFromUri(uri);
 
         String selection = sAdvertisementEmailSelection;
@@ -58,11 +66,10 @@ public class NeedleProvider extends ContentProvider {
         );
     }
 
-    private Cursor getAdvertisementsByLocation(Uri uri, String[] projection) {
+    private Cursor getAdvertisementsByLocation(Uri uri, String[] projection, String sortOrder) {
         String[] selectionArguments = AdvertisementEntry.getUserLocationFromUri(uri);
 
         String selection = sAdvertisementLocationSelection;
-
 
         return queryBuilder.query(
                 mOpenHelper.getReadableDatabase(),
@@ -72,6 +79,21 @@ public class NeedleProvider extends ContentProvider {
                 null,
                 null,
                 sortOrder
+        );
+    }
+
+    private Cursor getAdvertisementsByLocationAndTime(Uri uri, String[] projection, String sortOrderAsc) {
+        String[] selectionArguments = AdvertisementEntry.getLocationAndTimeFromUri(uri);
+        String selection = sAdvertisementLocationTimeSelection;
+
+        return queryBuilder.query(
+                mOpenHelper.getReadableDatabase(),
+                projection,
+                selection,
+                selectionArguments,
+                null,
+                null,
+                sortOrderAsc
         );
     }
 
@@ -88,11 +110,15 @@ public class NeedleProvider extends ContentProvider {
                 NeedleContract.PATH_ADVERTISEMENT + "/*",
                 ADVERTISEMENT_WITH_EMAIL);
 
-        //content://com.example.android.sunshine.app/weather/[country_code]/[zip_code]
+        //content://com.example.android.sunshine.app/advertisement/[country_code]/[zip_code]
         matcher.addURI(NeedleContract.CONTENT_AUTHORITY,
                 NeedleContract.PATH_ADVERTISEMENT + "/*/*",
                 ADVERTISEMENT_WITH_LOCATION);
 
+        //content://com.example.android.sunshine.app/advertisement/[country_code]/[zip_code]/[date]
+        matcher.addURI(NeedleContract.CONTENT_AUTHORITY,
+                NeedleContract.PATH_ADVERTISEMENT + "/*/*/#",
+                ADVERTISEMENT_WITH_LOCATION_AND_DATE);
 
         return matcher;
     }
@@ -108,6 +134,18 @@ public class NeedleProvider extends ContentProvider {
         Cursor retCursor = null;
 
         switch(sUriMatcher.match(uri)) {
+            case ADVERTISEMENT_WITH_LOCATION_AND_DATE: {
+                retCursor = getAdvertisementsByLocationAndTime(uri, projection, sortOrder);
+                break;
+            }
+            case ADVERTISEMENT_WITH_LOCATION: {
+                retCursor = getAdvertisementsByLocation(uri, projection, sortOrder);
+                break;
+            }
+            case ADVERTISEMENT_WITH_EMAIL: {
+                retCursor = getAdvertisementsByEmail(uri, projection, sortOrder);
+                break;
+            }
             case ADVERTISEMENT: {
                 retCursor = queryBuilder.query(
                         mOpenHelper.getReadableDatabase(),
@@ -120,14 +158,7 @@ public class NeedleProvider extends ContentProvider {
                 );
                 break;
             }
-            case ADVERTISEMENT_WITH_EMAIL: {
-                retCursor = getAdvertisementsByEmail(uri, projection);
-                break;
-            }
-            case ADVERTISEMENT_WITH_LOCATION: {
-                retCursor = getAdvertisementsByLocation(uri, projection);
-                break;
-            }
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -140,7 +171,8 @@ public class NeedleProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
 
         if(match == ADVERTISEMENT || match == ADVERTISEMENT_WITH_EMAIL ||
-                match == ADVERTISEMENT_WITH_LOCATION) {
+                match == ADVERTISEMENT_WITH_LOCATION ||
+                match == ADVERTISEMENT_WITH_LOCATION_AND_DATE) {
             return AdvertisementEntry.CONTENT_TYPE;
         }
         else {

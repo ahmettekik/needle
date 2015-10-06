@@ -66,7 +66,8 @@ public class NeedleSyncAdapter extends AbstractThreadedSyncAdapter{
             provider.delete(NeedleContract.AdvertisementEntry.CONTENT_URI, null, null);
             adCollection = needleApi.ads().
                     getNeighborhoodAds(countryCode, zipCode, new DateTime(timeInMillis)).execute();
-
+            Log.d(LOG_TAG, adCollection.size() + " " + adCollection.isEmpty() + " " + adCollection);
+            if(adCollection.size() == 2) return;
             for(Advertisement ad: adCollection.getItems()) {
                 ContentValues adValues = new ContentValues();
                 adValues.put(NeedleContract.AdvertisementEntry.COLUMN_USER_EMAIL,

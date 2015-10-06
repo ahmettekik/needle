@@ -156,7 +156,7 @@ public class DetailsActivityFragment extends Fragment
         mNumber = data.getString(COL_AD_NUM);
         if(mNumber == null) {
             holder.dialView.setVisibility(View.INVISIBLE);
-            holder.dialView.setVisibility(View.INVISIBLE);
+            holder.textView.setVisibility(View.INVISIBLE);
         } else {
             holder.dialView.setOnClickListener(this);
             holder.textView.setOnClickListener(this);
