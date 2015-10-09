@@ -11,7 +11,7 @@ import com.example.android.needle.sync.NeedleSyncAdapter;
 public class MainActivity extends Activity
         implements SortbyDialog.NoticeDialogListener{
     private static final String KEY_REGISTER = "register";
-    private static final String ALL_FRAGMENT_TAG = "AllFragment";
+    public static final String ALL_FRAGMENT_TAG = "AllFragment";
     private ActionBar actionBar;
 
 

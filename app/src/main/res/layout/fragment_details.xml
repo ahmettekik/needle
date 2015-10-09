@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:id="@+id/ad_desc_textView"
-                android:textAppearance="?android:textAppearanceMedium"
+                android:textAppearance="?android:textAppearanceLarge"
                 android:textColor="@color/grey"
                 android:fontFamily="sans-serif-condensed" />
 
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:id="@+id/ad_time_textView"
-                android:textAppearance="?android:textAppearanceMedium"
+                android:textAppearance="?android:textAppearanceSmall"
                 android:textColor="@color/grey"
                 android:textStyle="italic"
                 android:fontFamily="sans-serif-light" />

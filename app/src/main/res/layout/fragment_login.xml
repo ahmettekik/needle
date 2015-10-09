@@ -48,10 +48,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="24dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
+            android:orientation="vertical"
             android:gravity="center_vertical">
             <TextView
                 android:layout_width="wrap_content"
@@ -59,6 +59,7 @@
                 android:textColor="@color/white"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:text = "@string/pref_country_code_label"
+                android:id="@+id/zip_code_textView"
                 android:fontFamily="sans-serif-light"/>
 
             <RadioGroup android:layout_width="fill_parent"
@@ -81,22 +82,22 @@
                     android:text="@string/tr_country_code"
                     android:onClick="onRadioButtonClicked"/>
             </RadioGroup>
+
+
         </LinearLayout>
-
-
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif-light"
             android:inputType="number"
             android:hint="@string/zip_code"
             android:textColorHint="@color/white"
             android:id="@+id/zip_code_editText"/>
+
+
 
         <com.google.android.gms.common.SignInButton
             android:layout_width="match_parent"

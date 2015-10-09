@@ -35,7 +35,7 @@ public class NeedleSyncAdapter extends AbstractThreadedSyncAdapter{
     public final String LOG_TAG = NeedleSyncAdapter.class.getSimpleName();
 
 
-    // Interval at which to sync with the weather, in milliseconds.
+    // Interval at which to sync with the app, in milliseconds.
     // 60 seconds (1 minute) * 180 = 3 hours
     public static final int SYNC_INTERVAL = 60 * 180;
     public static final long HOUR_IN_MILLIS = 60 * 60 * 1000;

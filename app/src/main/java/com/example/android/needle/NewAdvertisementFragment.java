@@ -25,6 +25,7 @@ import java.util.Date;
  */
 public class NewAdvertisementFragment extends android.app.Fragment {
 
+    public static final String NEWANNOUNCEMENTEXTRA = "newAnnouncement";
     private String mDescription;
     private String mName;
     private String mNumber;
@@ -213,9 +214,10 @@ public class NewAdvertisementFragment extends android.app.Fragment {
 
                 new AdvertisementTask().execute(intent);
 
-
+                boolean newAnnouncement = true;
                 Intent i = new Intent(getActivity(), MainActivity.class);
                 i.putExtra(LoginActivity.EMAILEXTRA, email);
+                i.putExtra(NEWANNOUNCEMENTEXTRA, newAnnouncement);
                 startActivity(i);
             }
         });

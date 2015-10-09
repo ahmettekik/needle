@@ -99,6 +99,8 @@ public  class AllFragment extends android.app.Fragment
         mCursor.close();
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -111,6 +113,7 @@ public  class AllFragment extends android.app.Fragment
         String[] location = Utility.getLocation(getActivity());
         mCountryCode = location[0];
         mZipCode = location[1];
+
 
         mNeedleApi = CloudEndPointBuilderHelper.getEndpoints();
         if(mEmail != null) {
@@ -235,6 +238,22 @@ public  class AllFragment extends android.app.Fragment
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        String[] location = Utility.getLocation(getActivity());
+
+
+        if(!location[0].equals(mCountryCode) || !location[1].equals(mZipCode)) {
+            mCountryCode = location[0];
+            mZipCode = location[1];
+            onUpdate();
+        }
+
+
+
+    }
+
+    @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mAnnouncementAdapter.swapCursor(data);
     }
@@ -257,6 +276,11 @@ public  class AllFragment extends android.app.Fragment
             mSortOrder = NeedleContract.AdvertisementEntry.COLUMN_DATE + " DESC";
         }
 
+        getLoaderManager().restartLoader(ADVERTISEMENT_LOADER, null, this);
+    }
+
+    public void onUpdate() {
+        NeedleSyncAdapter.syncImmediately(getActivity());
         getLoaderManager().restartLoader(ADVERTISEMENT_LOADER, null, this);
     }
 

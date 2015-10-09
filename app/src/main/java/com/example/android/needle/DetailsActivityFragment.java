@@ -20,9 +20,11 @@ import android.widget.TextView;
 
 import com.example.android.needle.backend.needle.Needle;
 import com.example.android.needle.data.NeedleContract.AdvertisementEntry;
-import com.google.api.client.util.DateTime;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -34,6 +36,8 @@ public class DetailsActivityFragment extends Fragment
     private String mEmail;
 
     private final String TAG = getClass().getSimpleName();
+    private static final long MINUTE_IN_MILLIES = 60 * 1000;
+    private static final long HOUR_IN_MILLIES = 60 * 60 * 1000;
 
     private Cursor mCursor;
     private Uri mUri;
@@ -149,8 +153,11 @@ public class DetailsActivityFragment extends Fragment
         holder.descriptionView.setText(mDescription);
 
 
-        Long time = data.getLong(COL_AD_DATE);
-        holder.timeView.setText(new DateTime(time).toString());
+        long time = data.getLong(COL_AD_DATE);
+        String sTime = formatDate(time);
+        long remainingTime = time + HOUR_IN_MILLIES - System.currentTimeMillis();
+        remainingTime /= MINUTE_IN_MILLIES;
+        holder.timeView.setText("Posted at " + sTime + ", " + remainingTime + " minutes left" );
         //TODO: change this view to show when the ad is posted and when it'll be removed.
 
         mNumber = data.getString(COL_AD_NUM);
@@ -175,11 +182,19 @@ public class DetailsActivityFragment extends Fragment
 
         holder.mailView.setOnClickListener(this);
 
-        //TODO: change the button behaviors
+    }
 
+    private String formatDate(long time) {
+        String[] location = Utility.getLocation(getActivity());
 
-
-
+        if("us".equals(location[0])) {
+            SimpleDateFormat formatter = new SimpleDateFormat("h:mm a", Locale.US);
+            return formatter.format(new Date(time));
+        } else if ("tr".equals(location[0])) {
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+            return formatter.format(new Date(time));
+        }
+            return null;
     }
 
     @Override
