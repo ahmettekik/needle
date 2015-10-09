@@ -3,7 +3,6 @@
     <string name="app_name_lower_case">needle</string>
     <string name="action_settings">Settings</string>
     <string name="app_motto">Connecting the hood.</string>
-    <string name="country_code">country code (e.g. Tr)</string>
     <string name="zip_code">zip code (e.g. 06530)</string>
     <string name="anon_login_button_text">Anon Login</string>
     <string name="google_login_button_text">Google Login</string>
@@ -18,24 +17,11 @@
     <string name="cancel_new_ad">Cancel</string>
     <string name="content_authority">com.example.android.needle</string>
     <string name="sync_account_type">needle.android.example.com</string>
-    <string name="pref_country_code_key">countryCode</string>
     <string name="pref_zip_code_key">zipCode</string>
-    <string name="pref_country_code_label">Country Code</string>
     <string name="pref_zip_code_label">Zip Code</string>
-    <string name="us_country_code">us</string>
-    <string name="tr_country_code">tr</string>
     <string name="sort_by" color="@color/needle_yellow">Sort by:</string>
     <string name="date_ascending" color="@color/grey">Date Asc</string>
     <string name="date_descending" color="@color/grey">Date Desc</string>
-
-    <string-array name="countries_array">
-        <item>us</item>
-        <item>tr</item>
-    </string-array>
-    <string-array name="countries_array_values">
-        <item>us</item>
-        <item>tr</item>
-    </string-array>
 
     <string-array name="sort_by_array">
         <item>@string/date_ascending</item>

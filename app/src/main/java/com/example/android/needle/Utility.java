@@ -12,9 +12,7 @@ public class Utility {
     public static String[] getLocation(Context context) {
         String[] location = new String[2];
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        location[0] = prefs.getString(context.getString(R.string.pref_country_code_key),
-                null
-        );
+        location[0] = "us";
         location[1] = prefs.getString(context.getString(R.string.pref_zip_code_key),
                 null
         );

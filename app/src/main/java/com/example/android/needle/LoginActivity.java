@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -44,7 +43,6 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
 
 
     private String mZipCode;
-    private String mCountryCode;
     private String mEmail;
     public static final String EMAILEXTRA = "emailextra";
 
@@ -60,8 +58,7 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
         setContentView(R.layout.fragment_login);
 
         EditText zipCodeEditText = (EditText) findViewById(R.id.zip_code_editText);
-        RadioButton trRadioButton = (RadioButton) findViewById(R.id.radio_tr);
-        RadioButton usRadioButton = (RadioButton) findViewById(R.id.radio_us);
+
 
         // Restore from saved instance state
         // [START restore_saved_instance_state]
@@ -73,14 +70,6 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
         if(location[0] != null && location[1] != null) {
             zipCodeEditText.setText(location[1]);
             mZipCode = location[1];
-            if(location[0].equals("us")) {
-                usRadioButton.setChecked(true);
-                mCountryCode = "us";
-            } else {
-                trRadioButton.setChecked(true);
-                mCountryCode = "tr";
-            }
-
         }
 
         // Build GoogleApiClient with access to basic profile
@@ -114,25 +103,6 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
 
     }
 
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.radio_us:
-                if (checked) {
-                    mCountryCode = "us";
-                }
-                    break;
-            case R.id.radio_tr:
-                if (checked) {
-                    mCountryCode = "tr";
-                }
-
-                    break;
-        }
-    }
 
     @Override
     public void onStart() {
@@ -229,11 +199,10 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             preferences
                     .edit()
-                    .putString(getString(R.string.pref_country_code_key), mCountryCode)
                     .putString(getString(R.string.pref_zip_code_key), mZipCode)
                     .apply();
 
-            if(mEmail != null && mZipCode != null && mCountryCode != null) {
+            if(mEmail != null && mZipCode != null) {
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra(EMAILEXTRA, mEmail);
                 startActivity(intent);
