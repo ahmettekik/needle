@@ -23,6 +23,10 @@ import java.util.Date;
 /**
  * A placeholder fragment containing a simple view.
  */
+
+    // this fragment is a form fragment. that is, it gets the information via text fields
+    // to add another announcement for the neighborhood. This activity can be called for two
+    // purposes. One is to add a new announcement or edit an old announcement.
 public class NewAdvertisementFragment extends android.app.Fragment {
 
     public static final String NEWANNOUNCEMENTEXTRA = "newAnnouncement";
@@ -52,10 +56,16 @@ public class NewAdvertisementFragment extends android.app.Fragment {
         final String number = intent.getStringExtra(DetailsActivityFragment.NUMBER_EXTRA);
         final String name = intent.getStringExtra(DetailsActivityFragment.NAME_EXTRA);
         final long oldId = intent.getLongExtra(DetailsActivityFragment.DATABASE_ID_EXTRA, -1);
+
+        // if description is not null, that means this activity is started by details fragment.
+        // otherwise, the initiator activity is main activity.
         if (description != null) toBeEdited = true;
         mNeedleApi = CloudEndPointBuilderHelper.getEndpoints();
 
 
+
+        // if the initiator activity is details activity (toBeEdited is keeping that information.),
+        // then extras such as number, name, and description will be set for editing.
         EditText descEditText = (EditText) view.findViewById(R.id.description_editText);
         if (toBeEdited) {
             mDescription = description;
@@ -169,7 +179,8 @@ public class NewAdvertisementFragment extends android.app.Fragment {
             }
         });
 
-
+        // no matter which button is clicked, the app will return to main activity. So, we need to
+        // supply the email as an extra for that activity.
         final Button addButton = (Button) view.findViewById(R.id.add_button);
         if (toBeEdited) addButton.setText("Edit");
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -252,6 +263,8 @@ public class NewAdvertisementFragment extends android.app.Fragment {
 
         return super.onOptionsItemSelected(item);
     }
+
+    // this asynctask will add the new announcement.
     private class AdvertisementTask extends AsyncTask<Intent, Void, Void> {
 
         @Override

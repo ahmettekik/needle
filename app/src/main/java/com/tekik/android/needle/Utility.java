@@ -8,7 +8,7 @@ import android.preference.PreferenceManager;
  * Created by jonfisk on 28/09/15.
  */
 public class Utility {
-
+    // This function is to retrieve country and zip code whenever needed.
     public static String[] getLocation(Context context) {
         String[] location = new String[2];
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);

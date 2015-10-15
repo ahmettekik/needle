@@ -19,8 +19,6 @@ public class AnnouncementAdapter extends CursorAdapter {
 
     public AnnouncementAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
-
-
     }
 
     @Override
@@ -34,6 +32,11 @@ public class AnnouncementAdapter extends CursorAdapter {
         String description = cursor.getString(AllFragment.COL_AD_DESC);
         descriptionTextView.setText(description);
 
+        // remaining time will be shown with the equation
+        // remaining time = time posted + hour_in_millis - time now
+        // if it is more than 45 minutes, remaining time will be shown in green color.
+        // else if it is more than 15 minutes but less than 45 minutes it'll be shown in yellow.
+        // else it will be in red color.
         TextView remainingTimeTextView = (TextView) view.findViewById(R.id.remaining_time_textView);
         long timeAfterAnHour = cursor.getLong(AllFragment.COL_AD_DATE) + HOUR_IN_MILLIS;
         long remainingTime = (timeAfterAnHour - System.currentTimeMillis()) / MINUTE_IN_MILLIS;

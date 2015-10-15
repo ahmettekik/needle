@@ -12,6 +12,9 @@ import android.os.Bundle;
 /**
  * A simple {@link Fragment} subclass.
  */
+
+    // This dialog fragment is for user to choose if the list will be sorted in asc or desc order.
+    // it includes an interface implemented by MainActivity to inform the result of the dialog.
 public class SortbyDialog extends DialogFragment {
 
 

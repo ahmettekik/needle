@@ -12,6 +12,8 @@ import android.preference.PreferenceManager;
 /**
  * Created by jonfisk on 14/10/15.
  */
+
+// This is end of user license agreement class.
 public class SimpleEula {
 
     private String EULA_PREFIX = "eula_";

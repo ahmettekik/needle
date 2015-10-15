@@ -40,9 +40,12 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
     /* Client used to interact with Google APIs. */
     private GoogleApiClient mGoogleApiClient;
 
-
     private String mZipCode;
+
+
     private String mEmail;
+
+    // intent extra key for the email.
     public static final String EMAILEXTRA = "emailextra";
 
 
@@ -66,6 +69,11 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
             mIsResolving = savedInstanceState.getBoolean(KEY_IS_RESOLVING);
             mShouldResolve = savedInstanceState.getBoolean(KEY_SHOULD_RESOLVE);
         }
+
+
+        /**
+         * Get the zip code if user already supplied one before and edit the zip code edit text.
+         */
         String[] location = Utility.getLocation(this);
         if(location[0] != null && location[1] != null) {
             zipCodeEditText.setText(location[1]);
@@ -189,14 +197,20 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
 
     @Override
     public void onClick(View v) {
+
+        // There is actually only one button in this view
         if (v.getId() == R.id.google_login_button) {
             onSignInClicked();
 
+
+            // Edit the zip code preference with the user input
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             preferences
                     .edit()
                     .putString(getString(R.string.pref_zip_code_key), mZipCode)
                     .apply();
+
+            // user can not log in unless she supplies an email and zip code with 5 digits.
             if(mEmail != null && mZipCode != null && mZipCode.length() == 5) {
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra(EMAILEXTRA, mEmail);

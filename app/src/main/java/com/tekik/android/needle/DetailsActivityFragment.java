@@ -46,11 +46,15 @@ public class DetailsActivityFragment extends Fragment
     private String mName;
     private String mNumber;
 
+    // id for the loader.
     private static final int DETAIL_LOADER = 0;
 
     public static final String DESCRIPTION_EXTRA = "description";
     public static final String NAME_EXTRA = "name";
     public static final String NUMBER_EXTRA = "number";
+
+    // this is a selection statement for the query. this selection will help us find the element
+    // of the list by its back end database id.
     private static final String sAdvertisementIdSelection =
             NeedleContract.AdvertisementEntry.TABLE_NAME + "." +
                     NeedleContract.AdvertisementEntry._ID + " = ? ";
@@ -58,6 +62,7 @@ public class DetailsActivityFragment extends Fragment
 
     private String[] sSelectionArgs = new String[1];
 
+    // This is the projection for the query calls we're gonna execute.
     public static final String[] AD_COLUMNS = {
             NeedleContract.AdvertisementEntry.TABLE_NAME + "." + NeedleContract.AdvertisementEntry._ID,
             NeedleContract.AdvertisementEntry.COLUMN_DATE,
@@ -68,6 +73,9 @@ public class DetailsActivityFragment extends Fragment
             NeedleContract.AdvertisementEntry.COLUMN_DATABASE_ID
     };
 
+
+    // These are the indices of database entries wrt AD_COLUMNS projection string.
+    // We won't have to deal with finding indices by calling another function.
     static final int COL_AD_ID = 0;
     static final int COL_AD_DATE = 1;
     static final int COL_AD_EMAIL = 2;
@@ -93,6 +101,7 @@ public class DetailsActivityFragment extends Fragment
 
         mUri = NeedleContract.AdvertisementEntry.CONTENT_URI;
 
+        //id is retrieved as an extra from the intent.
         sSelectionArgs[0] = Long.toString(id);
 
         mCursor = getActivity().getContentResolver().query(
@@ -117,6 +126,7 @@ public class DetailsActivityFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
+
         ViewHolder holder = new ViewHolder(rootView);
         rootView.setTag(holder);
 
@@ -156,7 +166,6 @@ public class DetailsActivityFragment extends Fragment
         long remainingTime = time + HOUR_IN_MILLIES - System.currentTimeMillis();
         remainingTime /= MINUTE_IN_MILLIES;
         holder.timeView.setText("Posted at " + sTime + ", " + remainingTime + " minutes left" );
-        //TODO: change this view to show when the ad is posted and when it'll be removed.
 
         mNumber = data.getString(COL_AD_NUM);
         if(mNumber == null) {
@@ -187,7 +196,6 @@ public class DetailsActivityFragment extends Fragment
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-
         //noinspection SimplifiableIfStatement
         switch (item.getItemId()) {
             case R.id.action_settings: {
@@ -216,6 +224,7 @@ public class DetailsActivityFragment extends Fragment
     public void onClick(View v) {
         int id = v.getId();
         switch(id) {
+            // this button starts the new announcement activity in editing mode.
             case R.id.details_edit_button: {
                 if(mDescription != null && mEmail != null && mName != null) {
                     Intent intent = new Intent(getActivity(), NewAdvertisementActivity.class);
@@ -230,10 +239,12 @@ public class DetailsActivityFragment extends Fragment
                 }
                 break;
             }
+            // this button deletes the announcement and returns the main activity.
             case R.id.details_delete_button: {
                 new DeleteAdTask().execute();
                 break;
             }
+            // this button starts an implicit intent to send an email to announcement owner.
             case R.id.email_imageView: {
                 Intent emailIntent = new Intent(Intent.ACTION_SEND);
                 emailIntent.setType("text/plain");
@@ -246,12 +257,14 @@ public class DetailsActivityFragment extends Fragment
                 startActivity(emailIntent);
                 break;
             }
+            // this button starts implicit intent to view the phone number.
             case R.id.dial_imageView: {
                 Uri number = Uri.parse("tel:" + mNumber);
                 Intent callIntent = new Intent(Intent.ACTION_VIEW, number);
                 startActivity(callIntent);
                 break;
             }
+            // this button initiates an implicit intent to text an sms.
             case R.id.text_imageView: {
                 Intent sendIntent = new Intent(Intent.ACTION_VIEW);
                 sendIntent.setType("text/plain");
@@ -263,7 +276,7 @@ public class DetailsActivityFragment extends Fragment
 
 
     }
-
+    // This is for simplifying the onCreateView function. sub views initiations are handled here.
     public static class ViewHolder {
         public final ImageView mailView;
         public final ImageView dialView;
@@ -286,6 +299,7 @@ public class DetailsActivityFragment extends Fragment
         }
     }
 
+    // delete the announcement and go to main activity.
     private class DeleteAdTask extends AsyncTask<Void, Void, Void> {
 
         @Override

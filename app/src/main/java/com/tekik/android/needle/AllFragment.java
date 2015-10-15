@@ -40,27 +40,39 @@ import java.io.IOException;
 public  class AllFragment extends android.app.Fragment
             implements LoaderManager.LoaderCallbacks<Cursor>{
 
-
+    // key for saving the email state
     private static final String KEY_EMAIL = "email";
 
+    // intent key for id
     public static final String ID_EXTRA = "id";
 
+    // loader id
     private static final int ADVERTISEMENT_LOADER = 0;
 
+
+    // to sort the announcements wrt to descending date.
     private String mSortOrder = NeedleContract.AdvertisementEntry.COLUMN_DATE + " DESC";
 
+    // extra to save the state of which member of the list was clicked the latest.
     private static final String POSITION_BUNDLE_KEY = "PositionBundleKey";
+    // member field to keep track of where the scrolling of list view has ended
     private int mPosition = ListView.INVALID_POSITION;
 
 
-
+    // member field for the backend api
     private Needle mNeedleApi;
+
     private  final String TAG = getClass().getSimpleName();
+
 
     private String mCountryCode;
     private String mZipCode;
     private String mEmail;
+
+    // in order to close the cursor after it's done, introduced a member variable.
     private Cursor mCursor;
+
+    // member field to declare the swipe refresh layout
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListView mListView;
 
@@ -202,6 +214,7 @@ public  class AllFragment extends android.app.Fragment
         return rootView;
     }
 
+    // this function is for starting the activity to add a new announcement.
     private void addNewAd() {
         Intent i = new Intent(getActivity(), NewAdvertisementActivity.class);
         if (mEmail != null) {
@@ -209,7 +222,10 @@ public  class AllFragment extends android.app.Fragment
             startActivity(i);
         }
     }
-
+    // this function is to refresh the content after swiping down the screen.
+    // There is .5 seconds wait time with every swipe to give time to server, content provider,
+    // and the loader. you have to call setRefreshing(false) because, the rotating arrow will
+    // never stop otherwise.
     private void refreshContent() {
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -233,7 +249,8 @@ public  class AllFragment extends android.app.Fragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
+        // build uri with country code and zip code. this will yield the announcements
+        // in a neighborhood.
         Uri adForLocationUri = NeedleContract.AdvertisementEntry
                 .buildAdvertisementwithLocation(mCountryCode, mZipCode);
 
@@ -252,7 +269,7 @@ public  class AllFragment extends android.app.Fragment
         super.onResume();
         String[] location = Utility.getLocation(getActivity());
 
-
+        // If the zip code or country code changes, the onUpdate func will be called.
         if(!location[0].equals(mCountryCode) || !location[1].equals(mZipCode)) {
             mCountryCode = location[0];
             mZipCode = location[1];
@@ -265,6 +282,8 @@ public  class AllFragment extends android.app.Fragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        // here if the item position changed, that position is retained after loading the
+        // announcements.
         if( mPosition != ListView.INVALID_POSITION ) {
             mListView.smoothScrollToPosition(mPosition);
         }
@@ -282,6 +301,8 @@ public  class AllFragment extends android.app.Fragment
         inflater.inflate(R.menu.menu_main, menu);
     }
 
+    // a dialog is called to sort the announcements. Right now, it is either date ascending
+    // or date descending, the default behavior is descending.
     public void afterDialog(Boolean isAscending) {
         if(isAscending) {
             mSortOrder = NeedleContract.AdvertisementEntry.COLUMN_DATE + " ASC";
@@ -292,6 +313,9 @@ public  class AllFragment extends android.app.Fragment
         getLoaderManager().restartLoader(ADVERTISEMENT_LOADER, null, this);
     }
 
+
+    // This is called in case any of the location values changes. It resyncs the Sync adapter
+    // restarts the loader.
     public void onUpdate() {
         NeedleSyncAdapter.syncImmediately(getActivity());
         getLoaderManager().restartLoader(ADVERTISEMENT_LOADER, null, this);
@@ -306,19 +330,24 @@ public  class AllFragment extends android.app.Fragment
 
         //noinspection SimplifiableIfStatement
         switch (item.getItemId()) {
+            // Settings activity starts
             case R.id.action_settings: {
                 startActivity(new Intent(getActivity(), SettingsActivity.class));
                 return true;
             }
+            // New announcement screen will start. This case is a floating button for devices
+            // after api 21.
             case R.id.action_plus: {
                 addNewAd();
                 return true;
             }
+            // Sort by dialog will appear.
             case R.id.action_sort: {
                 DialogFragment newFragment = SortbyDialog.newInstance();
                 newFragment.show(getFragmentManager(), "SortbyDialog");
                 return true;
             }
+            // Implicit intent is initiated to send a mail to needle email.
             case R.id.send_feedback: {
                 Intent emailIntent = new Intent(Intent.ACTION_SEND);
                 emailIntent.setType("text/plain");
@@ -333,6 +362,7 @@ public  class AllFragment extends android.app.Fragment
                 startActivity(emailIntent);
                 return true;
             }
+            // implicit intent for rating Needle on Google Play.
             case R.id.action_rate_needle: {
                 Uri uri = Uri.parse("market://details?id=" + getActivity().getPackageName());
                 Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
@@ -358,6 +388,7 @@ public  class AllFragment extends android.app.Fragment
         return super.onOptionsItemSelected(item);
     }
 
+    // This asynctask will send the user email to backend.
     private class UserTask extends AsyncTask<Void, Void, Void> {
 
         @Override

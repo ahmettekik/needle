@@ -33,11 +33,11 @@ public class MainActivity extends Activity
 
 
         actionBar = getActionBar();
+        actionBar.setHomeButtonEnabled(false);
 
         if(savedInstanceState == null) {
             new GcmRegistrationAsyncTask(this).execute();
         }
-        actionBar.setHomeButtonEnabled(false);
 
 
         NeedleSyncAdapter.initializeSyncAdapter(
@@ -55,7 +55,9 @@ public class MainActivity extends Activity
         outState.putBoolean(KEY_REGISTER, mRegister);
     }
 
-
+    // This activity implements a dialog listener and according to the result of this dialog
+    // one of the below functions will be called. yet, these functions also call afterDialog()
+    // function of AllFragment to resync the sync adapter and to restart the loader.
     @Override
     public void onDialogSortByAscending(DialogFragment dialog) {
         AllFragment fragment = (AllFragment) getFragmentManager()

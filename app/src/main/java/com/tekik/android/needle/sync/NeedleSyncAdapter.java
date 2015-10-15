@@ -44,6 +44,9 @@ public class NeedleSyncAdapter extends AbstractThreadedSyncAdapter{
         super(context, autoInitialize);
     }
 
+    // This function is where backend database and SQLite database are connected.
+    // Announcements are fetched from the google datastore and kept in the local database.
+    // any announcement older than an hour is not fetched.
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
 

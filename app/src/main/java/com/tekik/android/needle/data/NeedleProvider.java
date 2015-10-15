@@ -17,7 +17,7 @@ public class NeedleProvider extends ContentProvider {
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
-
+    // id values for building uri matcher
     static final int ADVERTISEMENT = 100;
     static final int ADVERTISEMENT_WITH_EMAIL = 101;
     static final int ADVERTISEMENT_WITH_LOCATION = 102;

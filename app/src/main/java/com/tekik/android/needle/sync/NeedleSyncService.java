@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 /**
  * Created by jonfisk on 23/09/15.
@@ -15,7 +14,6 @@ public class NeedleSyncService extends Service {
 
     @Override
     public void onCreate() {
-        Log.d("NeedleSyncService", "onCreate - NeedleSyncService");
         synchronized (sSyncAdapterLock) {
             if(sNeedleSyncAdapter == null) {
                 sNeedleSyncAdapter = new NeedleSyncAdapter(getApplicationContext(), true);

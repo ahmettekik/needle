@@ -9,7 +9,7 @@ import com.google.api.client.extensions.android.json.AndroidJsonFactory;
  */
 public final class CloudEndPointBuilderHelper {
 
-
+    // This function simply retrieves the backend api for client application.
     public static Needle getEndpoints() {
         Needle.Builder builder = new Needle.Builder(
                 AndroidHttp.newCompatibleTransport(),
