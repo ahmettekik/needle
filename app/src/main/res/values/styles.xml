@@ -19,21 +19,23 @@
     </style>
 
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:logo">@drawable/ic_launcher</item>
+        <item name="android:logo">@mipmap/ic_launcher</item>
         <item name="android:background">@color/needle_yellow</item>
         <item name="android:titleTextStyle">@style/MyActionBarTitleText</item>
+        <item name="android:homeAsUpIndicator">@drawable/apptheme_back_btn</item>
     </style>
 
 
     <style name="MyActionBarTitleText"
         parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/grey</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/background_blue</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 
     <style name="MyActionBarOverflowButton" parent="@android:style/Widget.Holo.Light.ActionButton.Overflow">
-        <item name="colorButtonNormal">@color/grey</item>
+        <item name="colorControlNormal">@color/background_blue</item>
     </style>
 
 

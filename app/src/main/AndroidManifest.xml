@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.android.needle" >
+    package="com.tekik.android.needle" >
+
+    <compatible-screens>
+        <!-- all small size screens -->
+        <screen android:screenSize="small" android:screenDensity="ldpi" />
+        <screen android:screenSize="small" android:screenDensity="mdpi" />
+        <screen android:screenSize="small" android:screenDensity="hdpi" />
+        <screen android:screenSize="small" android:screenDensity="xhdpi" />
+        <!-- all normal size screens -->
+        <screen android:screenSize="normal" android:screenDensity="ldpi" />
+        <screen android:screenSize="normal" android:screenDensity="mdpi" />
+        <screen android:screenSize="normal" android:screenDensity="hdpi" />
+        <screen android:screenSize="normal" android:screenDensity="xhdpi" />
+    </compatible-screens>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -19,12 +32,12 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:name="android.support.multidex.MultiDexApplication"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name="com.tekik.android.needle.LoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" >
@@ -35,27 +48,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.tekik.android.needle.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".NewAdvertisementActivity"
+            android:name="com.tekik.android.needle.NewAdvertisementActivity"
             android:label="@string/title_activity_new_advertisement"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="com.tekik.android.needle.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.needle.MainActivity" />
+                android:value="com.tekik.android.needle.MainActivity" />
         </activity>
 
         <provider
-            android:name=".data.NeedleProvider"
+            android:name="com.tekik.android.needle.data.NeedleProvider"
             android:authorities="@string/content_authority"
             android:exported="false"
             android:syncable="true" >
         </provider>
 
-        <service android:name=".sync.NeedleAuthenticatorService" >
+        <service android:name="com.tekik.android.needle.sync.NeedleAuthenticatorService" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -65,7 +78,7 @@
                 android:resource="@xml/authenticator" />
         </service>
         <service
-            android:name=".sync.NeedleSyncService"
+            android:name="com.tekik.android.needle.sync.NeedleSyncService"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
@@ -77,20 +90,20 @@
         </service>
 
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.tekik.android.needle.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="com.tekik.android.needle.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.needle.MainActivity" />
+                android:value="com.tekik.android.needle.MainActivity" />
         </activity>
         <activity
-            android:name=".DetailsActivity"
+            android:name="com.tekik.android.needle.DetailsActivity"
             android:label="@string/title_activity_details"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="com.tekik.android.needle.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.needle.MainActivity" />
+                android:value="com.tekik.android.needle.MainActivity" />
         </activity>
     </application>
 

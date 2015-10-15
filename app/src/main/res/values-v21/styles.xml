@@ -4,34 +4,23 @@
     <style name="NoActionBar" parent="@android:style/Theme.Material.Light">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="colorControlNormal">@color/white</item>
+        <item name="android:colorControlNormal">@color/white</item>
         <item name="android:listChoiceIndicatorSingle">
             @drawable/apptheme_btn_radio_holo_light
         </item>
+        <item name="android:colorPrimaryDark">@android:color/black</item>
     </style>
 
     <!-- main activity action bar styles -->
 
-    <style name="AppTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
+    <style name="AppTheme" parent="@android:style/Theme.Material.Light">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
         <item name="android:actionOverflowButtonStyle">@style/MyActionBarOverflowButton</item>
-    </style>
-
-    <style name="MyActionBar" parent="@android:style/Widget.Material.Light.ActionBar">
-        <item name="android:logo">@drawable/ic_launcher</item>
-        <item name="android:background">@color/needle_yellow</item>
-        <item name="android:titleTextStyle">@style/MyActionBarTitleText</item>
+        <item name="android:colorPrimary">@color/needle_yellow</item>
+        <item name="android:colorPrimaryDark">@color/orange</item>
+        <item name="android:displayOptions">useLogo|showTitle|showHome</item>
     </style>
 
 
-    <style name="MyActionBarTitleText"
-        parent="@android:style/TextAppearance.Material.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/grey</item>
-        <item name="android:textSize">22sp</item>
-    </style>
 
-
-    <style name="MyActionBarOverflowButton" parent="@android:style/Widget.Material.Light.ActionButton.Overflow">
-        <item name="colorButtonNormal">@color/grey</item>
-    </style>
 </resources>

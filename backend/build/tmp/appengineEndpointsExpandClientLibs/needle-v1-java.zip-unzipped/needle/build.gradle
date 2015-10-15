@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 
 
-group = 'com.example.android.needle.backend'
+group = 'com.tekik.android.needle.backend'
 archivesBaseName = 'needle'
 version = 'v1-1.20.0-SNAPSHOT'
 

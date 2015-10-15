@@ -4,7 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.android.needle.DetailsActivityFragment"
+    tools:context="com.tekik.android.needle.DetailsActivityFragment"
     android:orientation="vertical">
 
     <LinearLayout
@@ -86,7 +86,8 @@
             android:layout_height="wrap_content"
             android:text="@string/edit_button_text"
             android:fontFamily="sans-serif-light"
-            android:textColor="@color/grey"
+            android:textColor="@color/background_blue"
+            android:textStyle="bold"
             android:layout_marginRight="32dp"
             android:background="@color/needle_yellow"
             android:id="@+id/details_edit_button"/>
@@ -95,7 +96,8 @@
             android:layout_height="wrap_content"
             android:text="@string/delete_button_text"
             android:fontFamily="sans-serif-light"
-            android:textColor="@color/grey"
+            android:textColor="@color/background_blue"
+            android:textStyle="bold"
             android:background="@color/needle_yellow"
             android:id="@+id/details_delete_button"/>
 

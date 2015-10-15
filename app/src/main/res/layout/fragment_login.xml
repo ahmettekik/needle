@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="16dp"
+        android:clipChildren="true"
         android:weightSum="1">
 
         <TextView
@@ -31,7 +32,7 @@
             android:layout_height="96dp"
             android:layout_marginLeft="16dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_launcher"
+            android:src="@mipmap/ic_launcher"
             android:layout_weight="0.37" />
         </LinearLayout>
 
